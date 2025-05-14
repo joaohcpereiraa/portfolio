@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>O Meu Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="mediaqueries.css" />
+  <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+
+</head>
+
+<body>
+
+  <nav id="desktop-nav">
+    <div class="logo">Portfólio</div>
+    <button id="dark-mode-toggle" class="btn btn-color-2">🌙 Modo Escuro</button>
+    <div>
+      <ul class="nav-links">
+
+        <li><a href="#about">Sobre</a></li>
+        <li><a href="#experience">Experiência</a></li>
+        <li><a href="#projects">Projetos</a></li>
+        <li><a href="#contact">Contatos</a></li>
+      </ul>
+    </div>
+  </nav>
+  <nav id="hamburger-nav">
+    <div class="logo">João Pereira</div>
+    <div class="hamburger-menu">
+      <div class="hamburger-icon" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="menu-links">
+        <li><a href="#about" onclick="toggleMenu()">Sobre</a></li>
+        <li><a href="#experience" onclick="toggleMenu()">Experiência</a></li>
+        <li><a href="#projects" onclick="toggleMenu()">Projetos</a></li>
+        <li><a href="#contact" onclick="toggleMenu()">Contatos</a></li>
+      </div>
+    </div>
+  </nav>
+  <section id="profile">
+    <div class="section__pic-container">
+      <img src="./assets/12.png" alt="Joao Pereira profile picture" />
+    </div>
+    <div class="section__text">
+      <p class="section__text__p1">Olá o meu nome é,</p>
+      <h1 class="title">João Pereira</h1>
+      <p class="section__text__p1">E sou</p>
+      <p class="section__text__p2">Desenvolvedor FullStack</p>
+      <div class="btn-container">
+        <button class="btn btn-color-2" onclick="window.open('./assets/CV_PT.pdf')">
+          Download CV
+        </button>
+        <button class="btn btn-color-1" onclick="location.href='./#contact'">
+          Informação de Contacto
+        </button>
+      </div>
+      <div id="socials-container">
+        <img src="./assets/linkedin.png" alt="My LinkedIn profile" class="icon"
+          onclick="location.href='https://www.linkedin.com/in/jo%C3%A3o-pereira-9a7296280/'" />
+        <img src="./assets/github.png" alt="My Github profile" class="icon"
+          onclick="location.href='https://github.com/joaohcpereiraa'" />
+      </div>
+    </div>
+  </section>
+  <section id="about">
+    <p class="section__text__p1">Fica a saber mais</p>
+    <h1 class="title">Sobre Mim</h1>
+    <div class="section-container">
+      <div class="about-details-container">
+        <div class="about-containers">
+          <div class="details-container">
+            <img src="./assets/experience.png" alt="Experience icon" class="icon" />
+            <h3>Experiência</h3>
+            <p>Estágio Verão <br />Desenvolvedor 3D: INESCTEC</p>
+          </div>
+          <div class="details-container">
+            <img src="./assets/experience.png" alt="Experience icon" class="icon" />
+            <h3>Experiência</h3>
+            <p>Estágio Curricular <br />Desenvolvedor FullStack: It's Possible Tech</p>
+          </div>
+        </div>
+        <div class="details-container">
+          <img src="./assets/education.png" alt="Education icon" class="icon" />
+          <h3>Educação</h3>
+          <p>Engenharia Informática<br />ISEP</p>
+        </div>
+      </div>
+    </div>
+    <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow" onclick="location.href='./#experience'" />
+  </section>
+  <section id="experience">
+    <h1 class="title">Experiência</h1>
+    <div class="experience-details-container">
+      <div class="about-containers">
+        <div class="details-container">
+          <h2 class="experience-sub-title">Backend Development</h2>
+          <div class="tech-card-container">
+            <div class="tech-card">
+
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg"
+                class="tech-icon" />
+              <p>JAVA</p>
+            </div>
+            <div class="tech-card">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
+                class="tech-icon" />
+              <p>JavaScript</p>
+            </div>
+            <div class="tech-card">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg"
+                class="tech-icon" />
+              <p>TypeScript</p>
+            </div>
+            <div class="tech-card">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg"
+                class="tech-icon" />
+              <p>CSharp</p>
+            </div>
+            <div class="tech-card">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-plain-wordmark.svg"
+                class="tech-icon" />
+              <p>NodeJS</p>
+            </div>
+            <div class="tech-card">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dotnetcore/dotnetcore-original.svg"
+                class="tech-icon" />
+              <p>.NetCore</p>
+            </div>
+            <div class="tech-card">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg"
+                class="tech-icon" />
+              <p>Phyton</p>
+            </div>
+          </div>
+        </div>
+        <div class="details-container">
+          <h2 class="experience-sub-title">Frontend Development</h2>
+          <div class="tech-card-container">
+            <div class="tech-card">
+
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg"
+                class="tech-icon" />
+              <p>Angular</p>
+            </div>
+            <div class="tech-card">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg"
+                class="tech-icon" />
+              <p>React</p>
+            </div>
+            <div class="tech-card">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg"
+                class="tech-icon" />
+              <p>NextJS</p>
+            </div>
+            <div class="tech-card">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg"
+                class="tech-icon" />
+              <p>HTML</p>
+            </div>
+            <div class="tech-card">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg"
+                class="tech-icon" />
+              <p>CSS</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow" onclick="location.href='./#projects'" />
+  </section>
+  <section id="projects">
+    <p class="section__text__p1">Mais Recentes</p>
+    <h1 class="title">Projetos</h1>
+    <div class="experience-details-container">
+      <div class="about-containers">
+        <div class="details-container color-container">
+          <div class="article-container">
+            <img src="./assets/inesc.png" alt="Project 1" class="project-img" />
+          </div>
+          <h2 class="experience-sub-title project-title">A simple Immersive Tool: VR Training</h2>
+          <p class="project-description">
+            Projeto realizado com o intuito de projetar um modelo 3D
+            num ambiente de realidade virtual e puder interagir de diferentes formas com os seus componentes.
+            O projeto foi desenvolvido em Unity, utilizando C# para a lógica de programação. O modelo 3D foi
+            criado com o Blender e posteriormente importado para o Unity.
+          </p>
+
+        </div>
+        <div class="details-container color-container">
+          <div class="article-container">
+            <img src="./assets/noimage.jpg" alt="Project 2" class="project-img" />
+          </div>
+          <h2 class="experience-sub-title project-title">Hospital Management App</h2>
+          <p class="project-description">
+            Desenvolvemos um sistema para gerir pedidos cirúrgicos, marcações de consultas e recursos hospitalares. O
+            backend utiliza .NET Core, enquanto o frontend foi desenvolvido em
+            Angular, proporcionando uma experiência responsiva ao utilizador.
+            Posteriormente, foi integrado o Node.js para suportar funcionalidades em tempo real e serviços mais leves. O
+            sistema inclui ainda visualizações 3D da disponibilidade dos recursos para visualizar o agendamento de salas
+            de cirurgia e as alterações em tempo real.
+          </p>
+          <div class="btn-container">
+            <img src="./assets/github.png" alt="My LinkedIn profile" class="icon"
+              onclick="location.href='https://github.com/vscosousa/LAPR5_3DC_G15'">
+            </button>
+
+          </div>
+        </div>
+        <div class="details-container color-container">
+          <div class="article-container">
+            <img src="./assets/noimage.jpg" alt="Project 3" class="project-img" />
+          </div>
+          <h2 class="experience-sub-title project-title">Traveler</h2>
+          <p>
+            Estou a desenvolver uma aplicação web para gerir experiências de viagem personalizadas, criada
+            especificamente
+            para agências de viagens e travel designers. Esta plataforma pretende substituir os tradicionais documentos
+            estáticos,
+            como PDFs e materiais impressos, por propostas de viagem dinâmicas e interativas, acessíveis diretamente
+            através de páginas web personalizadas.
+
+            O backend está a ser implementado em Node.js, enquanto o frontend está a ser desenvolvido com Next.js e
+            Tailwind CSS,
+            proporcionando uma experiência responsiva e apelativa ao utilizador.
+          </p>
+
+
+        </div>
+      </div>
+    </div>
+    <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow" onclick="location.href='./#contact'" />
+  </section>
+  <section id="contact">
+    <p class="section__text__p1">Entrar em Contacto</p>
+    <h1 class="title">Contactos</h1>
+    <div class="contact-info-upper-container">
+      <div class="contact-info-container">
+        <img src="./assets/email.png" alt="Email icon" class="icon contact-icon email-icon" />
+        <p><a href="mailto:examplemail@gmail.com">joao.costa.20@hotmail.com</a></p>
+      </div>
+      <div class="contact-info-container">
+        <img src="./assets/linkedin.png" alt="LinkedIn icon" class="icon contact-icon" />
+        <p><a href="https://www.linkedin.com/in/jo%C3%A3o-pereira-9a7296280/">LinkedIn</a></p>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <nav>
+      <div class="nav-links-container">
+        <ul class="nav-links">
+          <li><a href="#about">Sobre</a></li>
+          <li><a href="#experience">Experiência</a></li>
+          <li><a href="#projects">Projetos</a></li>
+          <li><a href="#contact">Contacto</a></li>
+        </ul>
+      </div>
+
+    </nav>
+
+    <p>Copyright &#169; 2025 João Pereira. Todos os Direitos Reservados.</p>
+
+  </footer>
+  <script src="script.js"></script>
+</body>
+
+</html>
