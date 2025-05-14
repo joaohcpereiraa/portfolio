@@ -37,6 +37,11 @@ nav {
   justify-content: space-around;
   align-items: center;
   height: 17vh;
+  background-color: white;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .nav-links {
@@ -48,7 +53,7 @@ nav {
 a {
   color: black;
   text-decoration: none;
-  text-decoration-color: white;
+  text-decoration-color: inherit;
 }
 
 a:hover {
@@ -60,11 +65,13 @@ a:hover {
 
 .logo {
   font-size: 2rem;
+  font-weight: 600;
 }
 
 .logo:hover {
   cursor: default;
 }
+
 
 /* HAMBURGER MENU */
 
@@ -318,6 +325,8 @@ section {
   border-color: rgb(163, 163, 163);
   text-align: center;
 }
+
+
 
 .section-container {
   gap: 4rem;
