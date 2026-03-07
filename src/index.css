@@ -297,11 +297,23 @@ body {
   }
 
   #resume {
-    @apply w-fit h-fit absolute top-16 left-7/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    @apply w-[820px] max-w-[95vw] h-[85vh] absolute top-16 left-7/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 
     #window-header {
       h2 {
         @apply font-bold text-sm text-center flex-1;
+      }
+    }
+
+    .resume-scroll {
+      @apply h-[calc(85vh-49px)] overflow-y-auto px-2 py-3;
+
+      .react-pdf__Page {
+        @apply mb-4;
+
+        canvas {
+          @apply !w-full !h-auto;
+        }
       }
     }
   }
