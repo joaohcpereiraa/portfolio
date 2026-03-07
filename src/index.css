@@ -219,19 +219,23 @@ body {
       @apply text-xl font-semibold;
     }
 
-    ul {
-      @apply flex items-center gap-3;
+    .contact-socials {
+      @apply flex items-center justify-center gap-3;
 
       li {
-        @apply rounded-lg p-3 w-60 hover:-translate-y-0.5 hover:scale-105 origin-center transition-all duration-300;
+        @apply w-44 rounded-lg hover:-translate-y-0.5 hover:scale-105 origin-center transition-all duration-300;
+      }
 
-        a {
-          @apply space-y-5;
-        }
+      .contact-social-link {
+        @apply flex items-center justify-center gap-2 rounded-lg px-4 py-3;
+      }
 
-        p {
-          @apply font-semibold text-sm text-white;
-        }
+      .social-icon {
+        @apply size-5 object-contain shrink-0;
+      }
+
+      p {
+        @apply font-semibold text-sm text-white leading-none;
       }
     }
   }
