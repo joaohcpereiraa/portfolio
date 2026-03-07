@@ -4,6 +4,7 @@ import { Tooltip } from "react-tooltip";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import useWindowStore from "#store/window";
+import { assetUrl } from "../utils/assetUrl";
 
 
 const Dock = () => {
@@ -89,7 +90,7 @@ const Dock = () => {
               onClick={() => toggleApp({ id, canOpen })}
             >
               <img
-                src={`/images/${icon}`}
+                src={assetUrl(`/images/${icon}`)}
                 alt={name}
                 loading="lazy"
                 className={canOpen ? "" : "opacity-60"}

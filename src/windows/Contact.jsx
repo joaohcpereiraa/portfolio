@@ -1,6 +1,7 @@
 import WindowControlls from "../components/WindowControlls";
 import { socials } from "../constants";
 import WindowWrapper from "../hoc/WindowWrapper";
+import { assetUrl } from "../utils/assetUrl";
 
 const Contact = () => {
   return (
@@ -12,7 +13,7 @@ const Contact = () => {
 
       <div className="p-6 space-y-5 bg-gradient-to-b from-white to-gray-50/80">
         <div className="flex items-center gap-4">
-          <img src="/images/joao.png" alt="João" className="w-20 rounded-full" />
+          <img src={assetUrl("/images/joao.png")} alt="João" className="w-20 rounded-full" />
           <div className="space-y-1">
             <h3>Let&apos;s Connect</h3>
             <a

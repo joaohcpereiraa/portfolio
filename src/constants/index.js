@@ -1,3 +1,28 @@
+import { assetUrl } from "../utils/assetUrl";
+
+const ASSET_KEYS = new Set(["img", "icon", "image", "imageUrl", "href", "file"]);
+
+const mapAssetPaths = (value, key = "") => {
+  if (Array.isArray(value)) {
+    return value.map((item) => mapAssetPaths(item));
+  }
+
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([entryKey, entryValue]) => [
+        entryKey,
+        mapAssetPaths(entryValue, entryKey),
+      ]),
+    );
+  }
+
+  if (ASSET_KEYS.has(key) && typeof value === "string" && value.startsWith("/")) {
+    return assetUrl(value);
+  }
+
+  return value;
+};
+
 const navLinks = [
   {
     id: 1,
@@ -195,15 +220,21 @@ const gallery = [
   },
 ];
 
+const mappedNavIcons = mapAssetPaths(navIcons);
+const mappedBlogPosts = mapAssetPaths(blogPosts);
+const mappedSocials = mapAssetPaths(socials);
+const mappedPhotosLinks = mapAssetPaths(photosLinks);
+const mappedGallery = mapAssetPaths(gallery);
+
 export {
   navLinks,
-  navIcons,
+  mappedNavIcons as navIcons,
   dockApps,
-  blogPosts,
+  mappedBlogPosts as blogPosts,
   techStack,
-  socials,
-  photosLinks,
-  gallery,
+  mappedSocials as socials,
+  mappedPhotosLinks as photosLinks,
+  mappedGallery as gallery,
 };
 
 const WORK_LOCATION = {
@@ -429,12 +460,12 @@ const TRASH_LOCATION = {
   ],
 };
 
-export const locations = {
+export const locations = mapAssetPaths({
   work: WORK_LOCATION,
   about: ABOUT_LOCATION,
   resume: RESUME_LOCATION,
   trash: TRASH_LOCATION,
-};
+});
 
 const INITIAL_Z_INDEX = 1000;
 

@@ -4,6 +4,7 @@ import { useGSAP } from "@gsap/react";
 import { Draggable } from "gsap/draggable";
 import useWindowStore from "../store/window";
 import useLocationStore from "../store/location";
+import { assetUrl } from "../utils/assetUrl";
 
 const projects = locations.work?.children ?? [];
 
@@ -29,7 +30,7 @@ const Home = () => {
             className={clsx("group folder", project.windowPosition)}
             onClick={() => handleOpenProjectFinder(project)}
           >
-            <img src="/images/folder.png" alt={project.name} />
+            <img src={assetUrl("/images/folder.png")} alt={project.name} />
             <p>{project.name}</p>
           </li>
         ))}

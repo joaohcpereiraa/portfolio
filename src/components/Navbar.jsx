@@ -3,6 +3,7 @@ import { navIcons } from "#constants";
 import { locations } from "#constants";
 import useWindowStore from "#store/window";
 import dayjs from "dayjs";
+import { assetUrl } from "../utils/assetUrl";
 
 
 const Navbar = () => {
@@ -23,7 +24,7 @@ const Navbar = () => {
   return (
     <nav>
       <div>
-        <img src="/images/logo.svg" alt="Logo" />
+        <img src={assetUrl("/images/logo.svg")} alt="Logo" />
         <p className="font-bold">João's Portfolio</p>
 
         <ul>
