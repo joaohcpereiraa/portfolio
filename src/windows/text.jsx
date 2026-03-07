@@ -18,7 +18,7 @@ const Text = () => {
         <h2>{name}</h2>
       </div>
 
-      <div className="p-5 space-y-4 bg-white text-sm text-gray-700">
+      <div className="p-5 space-y-4 bg-white dark:bg-gray-900 text-sm text-gray-700 dark:text-gray-300">
         {image && (
           <img
             src={image}
@@ -27,7 +27,7 @@ const Text = () => {
           />
         )}
 
-        {subtitle && <p className="font-semibold text-gray-900">{subtitle}</p>}
+        {subtitle && <p className="font-semibold text-gray-900 dark:text-gray-100">{subtitle}</p>}
 
         {paragraphs.map((paragraph, index) => (
           <p key={`${name}-paragraph-${index}`}>{paragraph}</p>

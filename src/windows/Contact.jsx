@@ -11,21 +11,21 @@ const Contact = () => {
         <h2>Contact Me</h2>
       </div>
 
-      <div className="p-6 space-y-5 bg-gradient-to-b from-white to-gray-50/80">
+      <div className="p-6 space-y-5 bg-gradient-to-b from-white to-gray-50/80 dark:from-gray-900 dark:to-gray-900">
         <div className="flex items-center gap-4">
           <img src={assetUrl("/images/joao.png")} alt="João" className="w-20 rounded-full" />
           <div className="space-y-1">
             <h3>Let&apos;s Connect</h3>
             <a
               href="mailto:joao.costa.20@hotmail.com"
-              className="inline-flex items-center rounded-md border border-gray-200 bg-white px-2.5 py-1 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-100"
+              className="inline-flex items-center rounded-md border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 px-2.5 py-1 text-xs font-medium text-gray-700 dark:text-gray-200 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               joao.costa.20@hotmail.com
             </a>
           </div>
         </div>
 
-        <p className="text-sm leading-relaxed text-gray-700">
+        <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
           I&apos;m always open to new opportunities, collaborations, or just a
           friendly chat about all things tech. Whether you have a project in
           mind, want to discuss the latest trends in web development, or just

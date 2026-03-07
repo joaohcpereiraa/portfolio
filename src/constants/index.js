@@ -1,6 +1,13 @@
 import { assetUrl } from "../utils/assetUrl";
 
-const ASSET_KEYS = new Set(["img", "icon", "image", "imageUrl", "href", "file"]);
+const ASSET_KEYS = new Set([
+  "img",
+  "icon",
+  "image",
+  "imageUrl",
+  "href",
+  "file",
+]);
 
 const mapAssetPaths = (value, key = "") => {
   if (Array.isArray(value)) {
@@ -16,7 +23,11 @@ const mapAssetPaths = (value, key = "") => {
     );
   }
 
-  if (ASSET_KEYS.has(key) && typeof value === "string" && value.startsWith("/")) {
+  if (
+    ASSET_KEYS.has(key) &&
+    typeof value === "string" &&
+    value.startsWith("/")
+  ) {
     return assetUrl(value);
   }
 
@@ -132,27 +143,37 @@ const blogPosts = [
 const techStack = [
   {
     category: "Frontend",
-    items: ["React.js", "Next.js", "TypeScript"],
+    items: ["React.js", "Next.js", "Angular", "Vite"],
   },
   {
     category: "Mobile",
-    items: ["React Native", "Expo"],
+    items: ["Flutter"],
   },
   {
     category: "Styling",
-    items: ["Tailwind CSS", "Sass", "CSS"],
+    items: ["Tailwind CSS", "CSS"],
   },
   {
     category: "Backend",
-    items: ["Node.js", "Express", "NestJS", "Hono"],
+    items: [
+      "Node.js",
+      "Express",
+      ".NET Core",
+      "Serverless Functions",
+      "Spring Boot",
+    ],
   },
   {
     category: "Database",
-    items: ["MongoDB", "PostgreSQL"],
+    items: ["MongoDB", "PostgreSQL", "MySQL", "SQL Server"],
   },
   {
     category: "Dev Tools",
-    items: ["Git", "GitHub", "Docker"],
+    items: ["Git", "GitHub", "Docker", "Atlassian Environment"],
+  },
+  {
+    category: "Cloud And Deployment",
+    items: ["AWS", "Vercel"],
   },
 ];
 
@@ -438,26 +459,7 @@ const TRASH_LOCATION = {
   name: "Trash",
   icon: "/icons/trash.svg",
   kind: "folder",
-  children: [
-    {
-      id: 1,
-      name: "trash1.png",
-      icon: "/images/image.png",
-      kind: "file",
-      fileType: "img",
-      position: "top-10 left-10",
-      imageUrl: "/images/trash-1.png",
-    },
-    {
-      id: 2,
-      name: "trash2.png",
-      icon: "/images/image.png",
-      kind: "file",
-      fileType: "img",
-      position: "top-40 left-80",
-      imageUrl: "/images/trash-2.png",
-    },
-  ],
+  children: [],
 };
 
 export const locations = mapAssetPaths({

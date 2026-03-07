@@ -45,8 +45,8 @@ const Terminal = () => {
                 (100% complete)
             </p>
 
-            <p className="text-black">
-                <Flag size={15} fill="black" />
+            <p className="text-gray-700 dark:text-gray-300">
+                <Flag size={15} className="fill-gray-700 dark:fill-gray-300" />
                 Render time: 5ms
             </p>
         </div>

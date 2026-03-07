@@ -3,12 +3,15 @@ import Navbar from "./components/Navbar";
 import Welcome from "./components/Welcome";
 import gsap from "gsap";
 import { Draggable } from "gsap/draggable";
-import { Contact, Finder, ImageFile, Resume, Safari, Terminal, Text } from "./windows";
+import { Contact, Finder, ImageFile, NetworkError, Resume, Safari, Terminal, Text } from "./windows";
 import Home from "./components/Home";
+import useNetworkStore from "./store/network";
 
 gsap.registerPlugin(Draggable);
 
 const App = () => {
+  const { isOnline } = useNetworkStore();
+
   return (
     <main>
       <Navbar />
@@ -22,6 +25,7 @@ const App = () => {
       <Finder />
       <Contact />
       <Home />
+      {!isOnline && <NetworkError />}
     </main>
   );
 };

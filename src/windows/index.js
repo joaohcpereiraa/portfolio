@@ -5,3 +5,4 @@ export { default as Safari } from "./Safari";
 export { default as Terminal } from "./terminal";
 export { default as Text } from "./text";
 export { default as Contact } from "./Contact";
+export { default as NetworkError } from "./NetworkError";
