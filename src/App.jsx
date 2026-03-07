@@ -4,6 +4,7 @@ import Welcome from "./components/Welcome";
 import gsap from "gsap";
 import { Draggable } from "gsap/draggable";
 import { Contact, Finder, ImageFile, Resume, Safari, Terminal, Text } from "./windows";
+import Home from "./components/Home";
 
 gsap.registerPlugin(Draggable);
 
@@ -20,6 +21,7 @@ const App = () => {
       <Text />
       <Finder />
       <Contact />
+      <Home />
     </main>
   );
 };
