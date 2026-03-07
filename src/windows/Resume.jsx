@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import WindowControlls from "../components/WindowControlls";
 import WindowWrapper from "../hoc/WindowWrapper";
+import useWindowStore from "../store/window";
 
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
@@ -13,6 +14,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 const Resume = () => {
   const [numPages, setNumPages] = useState(0);
+  const resumeData = useWindowStore((state) => state.windows.resume.data);
+
+  const pdfFile = resumeData?.file || "/files/resumee.pdf";
+  const pdfTitle = resumeData?.title || "Resume.pdf";
 
   const handleLoadSuccess = ({ numPages: loadedPages }) => {
     setNumPages(loadedPages);
@@ -22,20 +27,20 @@ const Resume = () => {
     <>
       <div id="window-header">
         <WindowControlls target="resume" />
-        <h2>Resume.pdf</h2>
+        <h2>{pdfTitle}</h2>
 
         <a
-          href="files/resumee.pdf"
+          href={pdfFile}
           download
           className="cursor-pointer"
-          title="Download Resume"
+          title={`Download ${pdfTitle}`}
         >
           <Download className="icon" />
         </a>
       </div>
 
       <div className="resume-scroll">
-        <Document file="files/resumee.pdf" onLoadSuccess={handleLoadSuccess}>
+        <Document file={pdfFile} onLoadSuccess={handleLoadSuccess}>
           {Array.from({ length: numPages }, (_, index) => (
             <Page
               key={`resume-page-${index + 1}`}

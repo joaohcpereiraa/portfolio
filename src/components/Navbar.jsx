@@ -1,12 +1,24 @@
 import { navLinks } from "#constants";
 import { navIcons } from "#constants";
+import { locations } from "#constants";
 import useWindowStore from "#store/window";
 import dayjs from "dayjs";
 
 
 const Navbar = () => {
+   const { openWindow } = useWindowStore();
 
-   const {openWindow} = useWindowStore();
+   const handleOpenWindow = (type) => {
+    if (type === "about-me") {
+      const aboutTextFile = locations.about.children.find(
+        (item) => item.name === "about-me.txt" && item.fileType === "txt",
+      );
+      if (aboutTextFile) return openWindow("txtfile", aboutTextFile);
+      return;
+    }
+
+    openWindow(type);
+   };
 
   return (
     <nav>
@@ -16,7 +28,7 @@ const Navbar = () => {
 
         <ul>
           {navLinks.map(({ id, name, type }) => (
-            <li key={id} onClick={() => openWindow(type)}>
+            <li key={id} onClick={() => handleOpenWindow(type)}>
               <p>{name}</p>
             </li>
           ))}
