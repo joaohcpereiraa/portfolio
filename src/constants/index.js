@@ -173,22 +173,21 @@ const socials = [
   },
 ];
 
-// ─── Landing / hero copy (edit freely) ──────────────────────────────
+// ─── Landing / hero copy ──────────────────────────────
 const profile = {
   name: "João Pereira",
   role: "Full-Stack Developer",
-  bio: "I design and build web & mobile apps end-to-end — from polished React interfaces to the APIs and infrastructure behind them.",
+  bio: "I design and build web & mobile apps end-to-end from polished React interfaces to the APIs and infrastructure behind them.",
   cta: "Enter my pc",
 };
 
-// Short, recruiter-friendly project summaries shown on the landing page.
 const landingProjects = [
   {
     id: 1,
     name: "Condomind",
     tagline: "Condo management SaaS",
     description:
-      "A web platform that simplifies condo management — in-app communication, SIBS payments and an AI assistant for residents and admins.",
+      "A web platform that simplifies condominium management with in-app communication, SIBS payments and an AI assistant for residents and admins.",
     stack: ["Next.js", "Tailwind", "Serverless"],
     link: "https://app.condomind.pt/",
     linkLabel: "Live",
