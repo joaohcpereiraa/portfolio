@@ -680,11 +680,6 @@ html.dark body {
     animation: stars-drift 90s linear infinite;
   }
 
-  @keyframes stars-drift {
-    from { background-position: 0 0; }
-    to { background-position: 200px 400px; }
-  }
-
   /* Technical HUD corner frame accents. */
   .landing-frame {
     @apply fixed w-8 h-8 lg:w-12 lg:h-12 z-[35] pointer-events-none border-white/25;
@@ -727,7 +722,7 @@ html.dark body {
   }
 
   .landing-section-title {
-    @apply mt-3 font-roboto font-bold uppercase text-3xl md:text-5xl tracking-[0.15em];
+    @apply mt-3 font-roboto font-bold uppercase text-3xl md:text-5xl tracking-[0.15em] text-white;
   }
 
   /* Skills */
@@ -819,7 +814,7 @@ html.dark body {
   }
 
   .hero-name {
-    @apply mt-2 leading-none;
+    @apply mt-2 leading-none text-white;
   }
 
   .hero-role {
@@ -852,11 +847,6 @@ html.dark body {
     animation: tip-pulse 2.4s ease-in-out infinite;
   }
 
-  @keyframes tip-pulse {
-    0%, 100% { text-shadow: 0 0 10px rgba(120, 170, 255, 0.35); }
-    50% { text-shadow: 0 0 22px rgba(120, 170, 255, 0.9); }
-  }
-
   .landing-fade {
     @apply fixed inset-0 z-40 bg-black opacity-0 pointer-events-none;
   }
@@ -868,6 +858,18 @@ html.dark body {
       @apply text-sm text-center font-roboto text-gray-200;
     }
   }
+}
+
+/* Keyframes must live at the top level — nesting them inside #landing makes
+   the production minifier (Lightning CSS) drop the parent rule's declarations. */
+@keyframes stars-drift {
+  from { background-position: 0 0; }
+  to { background-position: 200px 400px; }
+}
+
+@keyframes tip-pulse {
+  0%, 100% { text-shadow: 0 0 10px rgba(120, 170, 255, 0.35); }
+  50% { text-shadow: 0 0 22px rgba(120, 170, 255, 0.9); }
 }
 
 .skip-intro {
