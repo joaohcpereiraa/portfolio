@@ -173,6 +173,48 @@ const socials = [
   },
 ];
 
+// ─── Landing / hero copy (edit freely) ──────────────────────────────
+const profile = {
+  name: "João Pereira",
+  role: "Full-Stack Developer",
+  bio: "I design and build web & mobile apps end-to-end — from polished React interfaces to the APIs and infrastructure behind them.",
+  cta: "Enter my pc",
+};
+
+// Short, recruiter-friendly project summaries shown on the landing page.
+const landingProjects = [
+  {
+    id: 1,
+    name: "Condomind",
+    tagline: "Condo management SaaS",
+    description:
+      "A web platform that simplifies condo management — in-app communication, SIBS payments and an AI assistant for residents and admins.",
+    stack: ["Next.js", "Tailwind", "Serverless"],
+    link: "https://app.condomind.pt/",
+    linkLabel: "Live",
+  },
+  {
+    id: 2,
+    name: "Traveler",
+    tagline: "AI travel recommendations",
+    description:
+      "Gives travel agencies AI-driven, personalized recommendations for destinations, stays and activities, plus tools to manage their customers.",
+    stack: ["Next.js", "Tailwind", "Node.js", "Express"],
+    link: "/files/traveler_relatory.pdf",
+    linkLabel: "Report",
+  },
+  {
+    id: 3,
+    name: "Hospital Management",
+    tagline: "Healthcare ops + 3D",
+    description:
+      "Team-built app for patient records, appointment scheduling and 3D visualization of surgical rooms, on a micro-service architecture.",
+    stack: ["Angular", ".NET Core", "Node.js", "Three.js"],
+    link: "https://github.com/vscosousa/LAPR5_3DC_G15",
+    linkLabel: "GitHub",
+  },
+];
+
 const photosLinks = [
   {
     id: 1,
@@ -228,6 +270,8 @@ const mappedGallery = mapAssetPaths(gallery);
 
 export {
   navLinks,
+  profile,
+  landingProjects,
   mappedNavIcons as navIcons,
   dockApps,
   mappedBlogPosts as blogPosts,
