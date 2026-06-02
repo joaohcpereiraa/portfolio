@@ -2,11 +2,18 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import useThemeStore from "../store/theme";
 import useNetworkStore from "../store/network";
+import useBootStore from "../store/boot";
 
 const ControlCenter = ({ onClose, triggerRef }) => {
   const { isDark, toggleTheme } = useThemeStore();
   const { isOnline, toggleWifi } = useNetworkStore();
+  const powerOff = useBootStore((s) => s.powerOff);
   const panelRef = useRef(null);
+
+  const handlePowerOff = () => {
+    onClose();
+    powerOff();
+  };
 
   // Entrance animation
   useEffect(() => {
@@ -139,6 +146,28 @@ const ControlCenter = ({ onClose, triggerRef }) => {
           {isDark ? "Dark" : "Light"}
         </button>
       </div>
+
+      {/* Divider */}
+      <div className="cc-divider" />
+
+      {/* Power */}
+      <button
+        onClick={handlePowerOff}
+        className="cc-appearance-btn cc-power-btn"
+        style={{ ...btnStyle, color: "#ff453a" }}
+        title="Return to the landing page"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M12 2v10M18.36 6.64a9 9 0 1 1-12.73 0"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        Turn Off
+      </button>
     </div>
   );
 };
