@@ -2,7 +2,7 @@ import Dock from "./components/Dock";
 import Navbar from "./components/Navbar";
 import Welcome from "./components/Welcome";
 import gsap from "gsap";
-import { Draggable } from "gsap/draggable";
+import { Draggable } from "gsap/Draggable";
 import { Contact, Finder, ImageFile, NetworkError, Resume, Safari, Terminal, Text } from "./windows";
 import Home from "./components/Home";
 import useNetworkStore from "./store/network";
