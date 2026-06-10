@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: "/portfolio/",
+  base: process.env.VERCEL ? "/" : "/portfolio/",
   resolve: {
     alias: {
       '#components': resolve(dirname(fileURLToPath(import.meta.url)), 'src/components'),
