@@ -168,6 +168,47 @@ html.dark body {
     }
   }
 
+  /* ── Lock screen ─────────────────────────────────── */
+  #lock-screen {
+    @apply fixed inset-0 z-[950] flex flex-col items-center justify-between py-16 select-none;
+    background-image: url("/images/wallpaper.png");
+    background-size: cover;
+    background-position: center;
+
+    &::before {
+      content: "";
+      @apply absolute inset-0 bg-black/30 backdrop-blur-md;
+    }
+
+    .lock-clock {
+      @apply relative text-center;
+
+      .lock-date {
+        @apply text-white/90 text-lg font-medium drop-shadow;
+      }
+
+      .lock-time {
+        @apply text-white text-7xl md:text-8xl font-bold tracking-tight drop-shadow-lg;
+      }
+    }
+
+    .lock-user {
+      @apply relative flex flex-col items-center gap-3;
+
+      img {
+        @apply size-20 rounded-full object-cover border-2 border-white/60 shadow-lg;
+      }
+
+      p {
+        @apply text-white font-semibold drop-shadow;
+      }
+
+      button {
+        @apply text-xs text-white/90 bg-white/20 border border-white/30 rounded-full px-4 py-1.5 backdrop-blur-sm cursor-pointer transition-colors hover:bg-white/30;
+      }
+    }
+  }
+
   #terminal {
     @apply w-xl absolute top-32 left-1/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 
@@ -433,6 +474,10 @@ html.dark body {
   & #window-controls .close,
   & #window-controls .maximize {
     @apply opacity-90;
+  }
+
+  & #lock-screen {
+    background-image: url("/images/wallpaper_dark.png");
   }
 
   & #safari {

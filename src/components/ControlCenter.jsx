@@ -3,15 +3,18 @@ import gsap from "gsap";
 import useThemeStore from "../store/theme";
 import useNetworkStore from "../store/network";
 import useBootStore from "../store/boot";
+import useUiStore from "../store/ui";
 
 const ControlCenter = ({ onClose, triggerRef }) => {
   const { isDark, toggleTheme } = useThemeStore();
   const { isOnline, toggleWifi } = useNetworkStore();
   const powerOff = useBootStore((s) => s.powerOff);
+  const lock = useUiStore((s) => s.lock);
   const panelRef = useRef(null);
 
   const handlePowerOff = () => {
     onClose();
+    lock(); // so the next boot starts at the lock screen
     powerOff();
   };
 
