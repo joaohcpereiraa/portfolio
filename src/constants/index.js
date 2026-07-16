@@ -415,7 +415,7 @@ const careerTimeline = [
   {
     id: 5,
     type: "education",
-    period: "2025 — 2027 (expected)",
+    period: "2026 — 2028 (expected)",
     title: "MSc in Cybersecurity & System Administration",
     place: "ISEP — Instituto Superior de Engenharia do Porto",
     description:

@@ -175,42 +175,32 @@ html.dark body {
       @apply font-bold text-sm text-center w-full;
     }
 
-    .techstack {
-      @apply text-sm font-roboto p-5;
+    .term-body {
+      @apply h-80 overflow-y-auto px-4 py-3 font-mono text-[13px] leading-relaxed cursor-text;
+    }
 
-      .label {
-        @apply flex items-center ms-10 mt-7;
-      }
+    .term-line {
+      @apply whitespace-pre-wrap break-words text-gray-800;
+    }
 
-      .content {
-        @apply py-5 my-5 border-y border-dashed space-y-1;
+    .term-prompt {
+      @apply font-semibold text-emerald-600;
+    }
 
-        li {
-          .check {
-            @apply text-[#00A154] w-5;
-          }
+    .term-cmd {
+      @apply text-gray-900;
+    }
 
-          h3 {
-            @apply font-semibold text-[#00A154] w-32 ms-5;
-          }
+    .term-input-row {
+      @apply flex items-center gap-2;
+    }
 
-          ul {
-            @apply flex items-center gap-3;
-          }
-        }
-      }
+    .term-input {
+      @apply flex-1 min-w-0 bg-transparent border-none outline-none font-mono text-[13px] text-gray-900 caret-emerald-600;
+    }
 
-      .footnote {
-        @apply text-[#00A154] space-y-1;
-
-        p {
-          @apply flex items-center;
-
-          svg {
-            @apply w-5 me-5;
-          }
-        }
-      }
+    .term-link {
+      @apply underline text-blue-600 hover:text-blue-500;
     }
   }
 
@@ -474,17 +464,24 @@ html.dark body {
   & #terminal {
     @apply bg-gray-950 text-gray-100;
 
-    .techstack {
-      .label p {
-        @apply text-gray-300;
-      }
+    .term-line {
+      @apply text-gray-200;
+    }
 
-      .content {
-        @apply border-gray-700;
-        li {
-          @apply text-gray-300;
-        }
-      }
+    .term-cmd {
+      @apply text-gray-100;
+    }
+
+    .term-prompt {
+      @apply text-emerald-400;
+    }
+
+    .term-input {
+      @apply text-gray-100 caret-emerald-400;
+    }
+
+    .term-link {
+      @apply text-blue-300 hover:text-blue-200;
     }
   }
 
