@@ -156,6 +156,147 @@ const techStack = [
   },
 ];
 
+// Skills organized by stack — one orbit ring per stack, switched via tabs.
+// Hovering a logo shows a card with the blurb + where the tech was used.
+const skillsOrbit = [
+  {
+    stack: "Frontend",
+    items: [
+      {
+        name: "React",
+        icon: "/icons/tech/react.svg",
+        blurb: "JavaScript library for building interactive user interfaces.",
+        usedAt:
+          "Daily at Its Possible Tech and in personal projects, including this portfolio.",
+      },
+      {
+        name: "Next.js",
+        icon: "/icons/tech/nextjs.svg",
+        blurb: "React framework with server-side rendering and full-stack features.",
+        usedAt:
+          "Core framework at Its Possible Tech, powering products like Condomind.",
+      },
+      {
+        name: "Angular",
+        icon: "/icons/tech/angular.svg",
+        blurb: "TypeScript framework for large-scale web applications.",
+        usedAt: "Frontend of the Hospital Management platform built at ISEP.",
+      },
+      {
+        name: "Tailwind CSS",
+        icon: "/icons/tech/tailwindcss.svg",
+        blurb: "Utility-first CSS framework for building custom designs fast.",
+        usedAt: "Styling for Condomind, Traveler and this portfolio.",
+      },
+      {
+        name: "Flutter",
+        icon: "/icons/tech/flutter.svg",
+        blurb: "Google's UI toolkit for cross-platform mobile apps.",
+        usedAt: "Cross-platform mobile apps in academic and personal projects.",
+      },
+      {
+        name: "Vite",
+        icon: "/icons/tech/vite.svg",
+        blurb: "Fast build tool and dev server for modern web projects.",
+        usedAt: "Build tooling for React projects — including this very portfolio.",
+      },
+    ],
+  },
+  {
+    stack: "Backend",
+    items: [
+      {
+        name: "Node.js",
+        icon: "/icons/tech/nodejs.svg",
+        blurb: "JavaScript runtime for building backend services and APIs.",
+        usedAt: "APIs and services at Its Possible Tech and in the Traveler project.",
+      },
+      {
+        name: "Express",
+        icon: "/icons/tech/express.svg",
+        blurb: "Minimal Node.js framework for building REST APIs.",
+        usedAt: "REST APIs for Traveler and services at Its Possible Tech.",
+      },
+      {
+        name: ".NET Core",
+        icon: "/icons/tech/dotnet.svg",
+        blurb: "Microsoft's framework for building web APIs and services.",
+        usedAt: "Backend micro-services of the Hospital Management platform at ISEP.",
+      },
+      {
+        name: "Spring Boot",
+        icon: "/icons/tech/springboot.svg",
+        blurb: "Java framework for production-ready backend services.",
+        usedAt: "Java backends built during my engineering degree at ISEP.",
+      },
+    ],
+  },
+  {
+    stack: "Databases",
+    items: [
+      {
+        name: "MongoDB",
+        icon: "/icons/tech/mongodb.svg",
+        blurb: "NoSQL document database for flexible data models.",
+        usedAt: "Data layer in product work at Its Possible Tech and side projects.",
+      },
+      {
+        name: "PostgreSQL",
+        icon: "/icons/tech/postgresql.svg",
+        blurb: "Advanced open-source relational database.",
+        usedAt: "Relational database of choice in product work at Its Possible Tech.",
+      },
+      {
+        name: "MySQL",
+        icon: "/icons/tech/mysql.svg",
+        blurb: "Popular open-source relational database.",
+        usedAt: "Relational databases across academic projects at ISEP.",
+      },
+    ],
+  },
+  {
+    stack: "Cloud",
+    items: [
+      {
+        name: "AWS",
+        icon: "/icons/tech/aws.svg",
+        blurb: "Amazon's cloud platform — compute, auth, storage and serverless.",
+        usedAt:
+          "Maintained serverless infra at Its Possible Tech: Lambda, API Gateway, Cognito, EC2, S3.",
+      },
+      {
+        name: "Vercel",
+        icon: "/icons/tech/vercel.svg",
+        blurb: "Deployment platform for frontend and serverless apps.",
+        usedAt: "Deploying Next.js apps and this portfolio.",
+      },
+    ],
+  },
+  {
+    stack: "Dev Tools",
+    items: [
+      {
+        name: "Git",
+        icon: "/icons/tech/git.svg",
+        blurb: "Distributed version control system.",
+        usedAt: "Version control on every single project I work on.",
+      },
+      {
+        name: "GitHub",
+        icon: "/icons/tech/github.svg",
+        blurb: "Platform for hosting code, collaboration and reviews.",
+        usedAt: "Home of my code — team workflows at work, ISEP and personal repos.",
+      },
+      {
+        name: "Docker",
+        icon: "/icons/tech/docker.svg",
+        blurb: "Containers for packaging and shipping applications.",
+        usedAt: "Containerizing services in academic and side projects.",
+      },
+    ],
+  },
+];
+
 const socials = [
   {
     id: 1,
@@ -177,10 +318,12 @@ const socials = [
 const profile = {
   name: "João Pereira",
   role: "Full-Stack Developer",
-  bio: "I design and build web & mobile apps end-to-end from polished React interfaces to the APIs and infrastructure behind them.",
+  bio: "Software Engineer graduated from ISEP, currently studying for an MSc in Cybersecurity & System Administration.",
   cta: "Enter my pc",
 };
 
+// `image` is a real screenshot; projects without one render a styled cover
+// using the `accent` gradient. Stack icons are optional (text-only chip when missing).
 const landingProjects = [
   {
     id: 1,
@@ -188,7 +331,13 @@ const landingProjects = [
     tagline: "Condo management SaaS",
     description:
       "A web platform that simplifies condominium management with in-app communication, SIBS payments and an AI assistant for residents and admins.",
-    stack: ["Next.js", "Tailwind", "Serverless"],
+    stack: [
+      { name: "Next.js", icon: "/icons/tech/nextjs.svg" },
+      { name: "Tailwind", icon: "/icons/tech/tailwindcss.svg" },
+      { name: "Serverless" },
+    ],
+    image: "/images/condomind_image.png",
+    accent: ["#2563eb", "#7c3aed"],
     link: "https://app.condomind.pt/",
     linkLabel: "Live",
   },
@@ -198,7 +347,13 @@ const landingProjects = [
     tagline: "AI travel recommendations",
     description:
       "Gives travel agencies AI-driven, personalized recommendations for destinations, stays and activities, plus tools to manage their customers.",
-    stack: ["Next.js", "Tailwind", "Node.js", "Express"],
+    stack: [
+      { name: "Next.js", icon: "/icons/tech/nextjs.svg" },
+      { name: "Tailwind", icon: "/icons/tech/tailwindcss.svg" },
+      { name: "Node.js", icon: "/icons/tech/nodejs.svg" },
+      { name: "Express", icon: "/icons/tech/express.svg" },
+    ],
+    accent: ["#0ea5e9", "#6366f1"],
     link: "/files/traveler_relatory.pdf",
     linkLabel: "Report",
   },
@@ -208,9 +363,63 @@ const landingProjects = [
     tagline: "Healthcare ops + 3D",
     description:
       "Team-built app for patient records, appointment scheduling and 3D visualization of surgical rooms, on a micro-service architecture.",
-    stack: ["Angular", ".NET Core", "Node.js", "Three.js"],
+    stack: [
+      { name: "Angular", icon: "/icons/tech/angular.svg" },
+      { name: ".NET Core", icon: "/icons/tech/dotnet.svg" },
+      { name: "Node.js", icon: "/icons/tech/nodejs.svg" },
+      { name: "Three.js", icon: "/icons/tech/threejs.svg" },
+    ],
+    accent: ["#10b981", "#0ea5e9"],
     link: "https://github.com/vscosousa/LAPR5_3DC_G15",
     linkLabel: "GitHub",
+  },
+];
+
+const careerTimeline = [
+  {
+    id: 1,
+    type: "education",
+    period: "Sep 2022 — Jun 2025",
+    title: "BSc in Informatics Engineering",
+    place: "ISEP — Instituto Superior de Engenharia do Porto",
+    description:
+      "Bachelor's degree in Informatics Engineering, covering software engineering, algorithms, databases and distributed systems.",
+  },
+  {
+    id: 2,
+    type: "work",
+    period: "Jun 2024 — Aug 2024",
+    title: "Software Engineer · Summer Internship",
+    place: "INESC TEC",
+    description:
+      "Built a VR MVP in Unity for loading, manipulating and inspecting 3D models, letting wind-turbine engineers inspect motors and components virtually.",
+  },
+  {
+    id: 3,
+    type: "work",
+    period: "Feb 2025 — Jun 2025",
+    title: "Junior Full-Stack Engineer · Internship",
+    place: "Its Possible Tech",
+    description:
+      "Developed full-stack apps with React, Next.js, Node.js, Express and TypeScript, built REST APIs and shipped LLM-powered features from implementation to deploy.",
+  },
+  {
+    id: 4,
+    type: "work",
+    period: "Jul 2025 — Jul 2026",
+    title: "Junior Full-Stack Software Engineer",
+    place: "Its Possible Tech",
+    description:
+      "Built products end-to-end with React, Next.js, Node.js and TypeScript, maintained AWS serverless infrastructure and integrated payment gateways and AI solutions.",
+  },
+  {
+    id: 5,
+    type: "education",
+    period: "2025 — 2027 (expected)",
+    title: "MSc in Cybersecurity & System Administration",
+    place: "ISEP — Instituto Superior de Engenharia do Porto",
+    description:
+      "Currently deepening my focus on security, networks and systems administration.",
   },
 ];
 
@@ -262,6 +471,8 @@ const gallery = [
 ];
 
 const mappedNavIcons = mapAssetPaths(navIcons);
+const mappedLandingProjects = mapAssetPaths(landingProjects);
+const mappedSkillsOrbit = mapAssetPaths(skillsOrbit);
 const mappedBlogPosts = mapAssetPaths(blogPosts);
 const mappedSocials = mapAssetPaths(socials);
 const mappedPhotosLinks = mapAssetPaths(photosLinks);
@@ -270,11 +481,13 @@ const mappedGallery = mapAssetPaths(gallery);
 export {
   navLinks,
   profile,
-  landingProjects,
+  mappedLandingProjects as landingProjects,
+  careerTimeline,
   mappedNavIcons as navIcons,
   dockApps,
   mappedBlogPosts as blogPosts,
   techStack,
+  mappedSkillsOrbit as skillsOrbit,
   mappedSocials as socials,
   mappedPhotosLinks as photosLinks,
   mappedGallery as gallery,

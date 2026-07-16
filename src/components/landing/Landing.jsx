@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import Hero from "./Hero";
+import Journey from "./Journey";
 import Skills from "./Skills";
 import Projects from "./Projects";
 import useBootStore from "#store/boot";
@@ -34,6 +35,7 @@ const Landing = () => {
       // Shift the backdrop colour as each section reaches the viewport centre.
       const bgStops = [
         { trigger: ".landing-hero-section", color: "#06070d" },
+        { trigger: ".landing-journey", color: "#070b14" },
         { trigger: ".landing-skills", color: "#0a0816" },
         { trigger: ".landing-projects", color: "#0d0712" },
         { trigger: ".landing-pc", color: "#000000" },
@@ -104,6 +106,7 @@ const Landing = () => {
           <Hero />
         </section>
 
+        <Journey />
         <Skills />
         <Projects />
 

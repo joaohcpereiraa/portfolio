@@ -1,7 +1,8 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, FileDown } from "lucide-react";
 import { profile, socials } from "#constants";
+import { assetUrl } from "../../utils/assetUrl";
 import { renderText, setupTextHover } from "../../utils/textHover";
 
 const NAME_WEIGHTS = { min: 400, max: 900, default: 400 };
@@ -22,21 +23,34 @@ const Hero = () => {
       <p className="hero-role">{profile.role}</p>
       <p className="hero-bio">{profile.bio}</p>
 
-      <ul className="hero-socials">
+      <div className="hero-actions">
         {socials.map((s) => (
-          <li key={s.id}>
-            <a
-              href={s.link}
-              target="_blank"
-              rel="noreferrer"
-              style={{ backgroundColor: s.bg }}
-            >
-              <img src={s.icon} alt={s.text} />
-              <span>{s.text}</span>
-            </a>
-          </li>
+          <a
+            key={s.id}
+            className="hero-social"
+            href={s.link}
+            target="_blank"
+            rel="noreferrer"
+            title={s.text}
+            aria-label={s.text}
+            style={{ backgroundColor: s.bg }}
+          >
+            <img src={s.icon} alt={s.text} />
+          </a>
         ))}
-      </ul>
+
+        <span className="hero-actions-divider" />
+
+        <a
+          className="hero-resume"
+          href={assetUrl("/files/resumee.pdf")}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <FileDown size={18} />
+          <span>Resume</span>
+        </a>
+      </div>
 
       <div className="hero-scroll-cue">
         <span>Scroll</span>
