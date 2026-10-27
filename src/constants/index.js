@@ -184,18 +184,6 @@ const skillsOrbit = [
         usedAt: "Frontend of the Hospital Management platform built at ISEP.",
       },
       {
-        name: "Tailwind CSS",
-        icon: "/icons/tech/tailwindcss.svg",
-        blurb: "Utility-first CSS framework for building custom designs fast.",
-        usedAt: "Styling for Condomind, Traveler and this portfolio.",
-      },
-      {
-        name: "Flutter",
-        icon: "/icons/tech/flutter.svg",
-        blurb: "Google's UI toolkit for cross-platform mobile apps.",
-        usedAt: "Cross-platform mobile apps in academic and personal projects.",
-      },
-      {
         name: "Vite",
         icon: "/icons/tech/vite.svg",
         blurb: "Fast build tool and dev server for modern web projects.",
@@ -223,12 +211,6 @@ const skillsOrbit = [
         icon: "/icons/tech/dotnet.svg",
         blurb: "Microsoft's framework for building web APIs and services.",
         usedAt: "Backend micro-services of the Hospital Management platform at ISEP.",
-      },
-      {
-        name: "Spring Boot",
-        icon: "/icons/tech/springboot.svg",
-        blurb: "Java framework for production-ready backend services.",
-        usedAt: "Java backends built during my engineering degree at ISEP.",
       },
     ],
   },
@@ -323,6 +305,18 @@ const profile = {
   cta: "Enter my pc",
 };
 
+// Contact card shown in the phone's Contacts app on the bedroom landing.
+const aboutCard = {
+  rows: [
+    { label: "email", value: "joao.costa.20@hotmail.com", href: "mailto:joao.costa.20@hotmail.com" },
+    { label: "based in", value: "Porto, Portugal" },
+    { label: "currently", value: "MSc in Cybersecurity & System Administration, ISEP" },
+    { label: "studied", value: "BSc in Informatics Engineering, ISEP" },
+  ],
+  summary:
+    "I'm a full-stack developer from Porto. After graduating in Informatics Engineering at ISEP, I spent the last year at Its Possible Tech building products end-to-end with React, Next.js, Node.js and TypeScript, from AWS serverless infrastructure to payments and AI features. Now I'm taking an MSc in Cybersecurity & System Administration to go deeper into security and systems.",
+};
+
 // `image` is a real screenshot; projects without one render a styled cover
 // using the `accent` gradient. Stack icons are optional (text-only chip when missing).
 const landingProjects = [
@@ -330,6 +324,7 @@ const landingProjects = [
     id: 1,
     name: "Condomind",
     tagline: "Condo management SaaS",
+    summary: "Condo management with in-app chat, SIBS payments and an AI assistant.",
     description:
       "A web platform that simplifies condominium management with in-app communication, SIBS payments and an AI assistant for residents and admins.",
     stack: [
@@ -346,6 +341,7 @@ const landingProjects = [
     id: 2,
     name: "Traveler",
     tagline: "AI travel recommendations",
+    summary: "AI-picked destinations, stays and activities for travel agencies.",
     description:
       "Gives travel agencies AI-driven, personalized recommendations for destinations, stays and activities, plus tools to manage their customers.",
     stack: [
@@ -354,6 +350,7 @@ const landingProjects = [
       { name: "Node.js", icon: "/icons/tech/nodejs.svg" },
       { name: "Express", icon: "/icons/tech/express.svg" },
     ],
+    image: "/images/traveler_cover.svg",
     accent: ["#0ea5e9", "#6366f1"],
     link: "/files/traveler_relatory.pdf",
     linkLabel: "Report",
@@ -362,6 +359,7 @@ const landingProjects = [
     id: 3,
     name: "Hospital Management",
     tagline: "Healthcare ops + 3D",
+    summary: "Patient records, scheduling and 3D surgical rooms on micro-services.",
     description:
       "Team-built app for patient records, appointment scheduling and 3D visualization of surgical rooms, on a micro-service architecture.",
     stack: [
@@ -370,6 +368,7 @@ const landingProjects = [
       { name: "Node.js", icon: "/icons/tech/nodejs.svg" },
       { name: "Three.js", icon: "/icons/tech/threejs.svg" },
     ],
+    image: "/images/hospital_cover.svg",
     accent: ["#10b981", "#0ea5e9"],
     link: "https://github.com/vscosousa/LAPR5_3DC_G15",
     linkLabel: "GitHub",
@@ -437,6 +436,7 @@ const mappedGallery = mapAssetPaths(gallery);
 export {
   navLinks,
   profile,
+  aboutCard,
   mappedLandingProjects as landingProjects,
   careerTimeline,
   mappedNavIcons as navIcons,
@@ -530,7 +530,7 @@ const WORK_LOCATION = {
           kind: "file",
           fileType: "img",
           position: "top-36 left-80",
-          imageUrl: "/images/traveler_image.png",
+          imageUrl: "/images/traveler_cover.svg",
         },
         {
           id: 5,

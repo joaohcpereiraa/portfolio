@@ -1,6 +1,6 @@
 import App from "./App";
 import useBootStore from "./store/boot";
-import Landing from "./components/landing/Landing";
+import Bedroom from "./components/bedroom/Bedroom";
 import BootScreen from "./components/BootScreen";
 
 const Experience = () => {
@@ -8,7 +8,7 @@ const Experience = () => {
 
   return (
     <>
-      {(phase === "landing" || phase === "entering") && <Landing />}
+      {(phase === "landing" || phase === "entering") && <Bedroom />}
       {phase === "booting" && <BootScreen />}
       {phase === "desktop" && <App />}
     </>
