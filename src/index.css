@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Georama:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Georama:ital,wght@0,100..900;1,100..900&family=Press+Start+2P&family=VT323&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
 
 @import "tailwindcss";
 
@@ -22,6 +22,7 @@ html.dark body {
 @theme {
   --font-georama: "Georama", sans-serif;
   --font-roboto: "Roboto Mono", monospace;
+  --font-pixel: "Press Start 2P", monospace;
   --breakpoint-3xl: 1920px;
 }
 
@@ -695,446 +696,722 @@ html.dark body {
   }
 }
 
-/* ─── Landing / intro experience ──────────────────────────────────── */
-#landing {
-  @apply fixed inset-0 z-[100] text-white select-none;
-  background-color: #06070d; /* scroll-driven; tweened per section in Landing.jsx */
+/* ─── Bedroom landing (src/components/bedroom) ───────────────────── */
+#bedroom {
+  @apply fixed inset-0 z-[100] bg-[#07060f] text-white select-none;
 
-  .landing-scroller {
-    @apply relative z-10 h-dvh w-dvw overflow-y-auto overflow-x-hidden;
+  canvas {
+    @apply cursor-grab touch-none;
   }
 
-  /* Tiling, slowly drifting starfield (the dotted pattern). */
-  .landing-stars {
-    @apply fixed inset-0 z-0 pointer-events-none;
-    background-image:
-      radial-gradient(1.5px 1.5px at 40px 60px, #fff, transparent),
-      radial-gradient(1.5px 1.5px at 120px 30px, #fff, transparent),
-      radial-gradient(1px 1px at 80px 140px, rgba(255, 255, 255, 0.85), transparent),
-      radial-gradient(1px 1px at 160px 100px, rgba(255, 255, 255, 0.7), transparent),
-      radial-gradient(1.5px 1.5px at 30px 170px, #fff, transparent),
-      radial-gradient(1px 1px at 190px 50px, rgba(255, 255, 255, 0.6), transparent),
-      radial-gradient(1px 1px at 100px 190px, rgba(255, 255, 255, 0.7), transparent),
-      radial-gradient(1.5px 1.5px at 10px 110px, #fff, transparent);
-    background-size: 200px 200px;
-    background-repeat: repeat;
-    opacity: 0.4;
-    animation: stars-drift 90s linear infinite;
+  &.dragging canvas {
+    @apply cursor-grabbing;
   }
 
-  /* Technical HUD corner frame accents. */
-  .landing-frame {
-    @apply fixed w-8 h-8 lg:w-12 lg:h-12 z-[35] pointer-events-none border-white/25;
-  }
-  .landing-frame.tl { @apply top-4 left-4 border-t-2 border-l-2; }
-  .landing-frame.tr { @apply top-4 right-4 border-t-2 border-r-2; }
-  .landing-frame.bl { @apply bottom-4 left-4 border-b-2 border-l-2; }
-  .landing-frame.br { @apply bottom-4 right-4 border-b-2 border-r-2; }
-
-  /* Decorative ∞ rule above section titles. */
-  .landing-rule {
-    @apply flex items-center justify-center gap-3 mb-5;
-
-    .line { @apply h-px w-16 bg-white/25; }
-    .mark { @apply font-roboto text-xs text-white/50; }
+  &.hovering canvas {
+    @apply cursor-pointer;
   }
 
-  /* Generic full-viewport info section (hero / skills / projects). */
-  .landing-section {
-    @apply relative w-full min-h-dvh flex-center py-24 px-6;
+  /* Hover label floating above a clickable object (drei <Html>). */
+  .bedroom-label {
+    @apply whitespace-nowrap rounded-md border border-cyan-200/30 bg-[#0c0a1c]/80 px-2.5 py-1 font-roboto text-[11px] uppercase tracking-[0.2em] text-cyan-100 backdrop-blur-md;
   }
 
-  .landing-section-inner {
-    @apply w-full max-w-5xl mx-auto;
-  }
+  /* Floating "Click to pick up" over the CV on the desk, pointing down at it */
+  .cv-pickup-hint {
+    @apply relative;
+    animation: cv-pickup-bob 1.8s ease-in-out infinite;
 
-  /* Hairline separators give a small, clear break between sections. */
-  .landing-journey,
-  .landing-skills,
-  .landing-projects,
-  .landing-pc {
-    @apply border-t border-white/8;
-  }
-
-  .landing-section-head {
-    @apply mb-12 text-center;
-  }
-
-  .landing-eyebrow {
-    @apply font-roboto text-[10px] uppercase tracking-[0.35em] text-blue-300/70;
-  }
-
-  .landing-section-title {
-    @apply mt-3 font-roboto font-bold uppercase text-3xl md:text-5xl tracking-[0.15em] text-white;
-  }
-
-  /* Skills — tech logos orbiting the section title. */
-  .skills-orbit {
-    --orbit-size: min(84vw, 34rem);
-    @apply relative mx-auto flex-center;
-    width: var(--orbit-size);
-    height: var(--orbit-size);
-  }
-
-  .orbit-guide {
-    @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/10 pointer-events-none;
-
-    &.outer {
-      width: calc(var(--orbit-size) * 0.92);
-      height: calc(var(--orbit-size) * 0.92);
-    }
-
-    &.inner {
-      width: calc(var(--orbit-size) * 0.54);
-      height: calc(var(--orbit-size) * 0.54);
-    }
-  }
-
-  /* The ring spins while each icon counter-spins at the same speed so the
-     logos stay upright. The ring layer overlaps the whole orbit, so it must
-     not catch the pointer — only the icons themselves do. */
-  .orbit-ring {
-    --radius: calc(var(--orbit-size) * 0.46);
-    @apply absolute inset-0 pointer-events-none;
-    animation: orbit-spin 70s linear infinite;
-
-    .orbit-icon {
-      animation: orbit-spin-rev 70s linear infinite;
-    }
-  }
-
-  .orbit-item {
-    @apply absolute left-1/2 top-1/2;
-    transform: translate(-50%, -50%) rotate(var(--angle))
-      translateY(calc(var(--radius) * -1)) rotate(calc(var(--angle) * -1));
-    /* Opacity-only pop-in (transform would clobber the placement above). */
-    animation: orbit-item-in 0.4s ease both;
-    animation-delay: calc(var(--i) * 60ms);
-  }
-
-  .orbit-icon {
-    @apply flex-center size-12 rounded-full bg-white/8 border border-white/15 backdrop-blur-sm cursor-pointer pointer-events-auto;
-    transition: scale 0.2s ease, border-color 0.2s ease;
-
-    &:hover {
-      scale: 1.25;
-      @apply border-white/40;
-    }
-
-    img {
-      @apply size-6 object-contain pointer-events-none;
-    }
-  }
-
-  /* Freeze the whole orbit while inspecting a logo. */
-  .skills-orbit:hover :is(.orbit-ring, .orbit-icon) {
-    animation-play-state: paused;
-  }
-
-  .orbit-center {
-    @apply relative z-10 w-72 col-center text-center pointer-events-none;
-
-    .landing-section-title {
-      @apply text-2xl md:text-3xl;
-    }
-  }
-
-  .orbit-hint {
-    @apply mt-3 text-[11px] text-gray-500;
-  }
-
-  /* Stack switcher below the orbit. */
-  .orbit-tabs {
-    @apply mt-8 flex flex-wrap items-center justify-center gap-2;
-  }
-
-  .orbit-tab {
-    @apply rounded-full px-4 py-1.5 text-xs font-semibold text-gray-300 bg-white/5 border border-white/15 cursor-pointer transition-colors hover:bg-white/10 hover:text-white;
-
-    &.active {
-      @apply bg-blue-400/15 border-blue-300/40 text-blue-100;
-    }
-  }
-
-  /* Detail card swapped into the middle while a logo is hovered. */
-  .orbit-detail {
-    @apply w-full col-center gap-1 rounded-2xl px-5 py-5 border border-white/10 bg-white/5 backdrop-blur-sm;
-    animation: orbit-detail-in 0.25s ease both;
-
-    img {
-      @apply size-9 object-contain mb-1.5;
-    }
-
-    h3 {
-      @apply text-base font-semibold text-white;
-    }
-
-    .orbit-detail-tag {
-      @apply font-roboto text-[10px] uppercase tracking-[0.25em] text-blue-300/70;
-    }
-
-    .orbit-detail-blurb {
-      @apply mt-1.5 text-xs text-gray-300 leading-relaxed;
-    }
-
-    .orbit-detail-used {
-      @apply mt-2 pt-2 border-t border-white/10 text-xs text-gray-400 leading-relaxed;
-    }
-  }
-
-  /* Journey — alternating career timeline around a central line. */
-  .timeline {
-    @apply relative max-w-4xl mx-auto;
-
-    &::before {
+    &::after {
       content: "";
-      @apply absolute top-0 bottom-0 w-px bg-white/15 left-4 md:left-1/2 md:-translate-x-1/2;
+      @apply absolute left-1/2 top-full -translate-x-1/2 border-x-[6px] border-t-[7px] border-x-transparent border-t-cyan-200/40;
     }
   }
 
-  .timeline-entry {
-    @apply relative mb-10 last:mb-0 pl-12 md:pl-0 md:w-[calc(50%-2.5rem)];
+  /* Bit's speech bubble: over its head, or docked bottom-left when it's out of view */
+  .guide-bubble {
+    @apply relative flex max-w-64 -translate-x-1/2 -translate-y-full items-start gap-2 rounded-2xl rounded-bl-sm border border-cyan-200/30 bg-[#0c0a1c]/85 px-3.5 py-2.5 text-[13px] leading-snug text-white/90 shadow-xl backdrop-blur-md;
+    width: max-content;
+    animation: guide-bubble-in 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 
-    .timeline-dot {
-      @apply absolute top-7 z-10 w-3 h-3 rounded-full bg-blue-300 left-4 -translate-x-1/2;
-      box-shadow: 0 0 14px rgba(147, 197, 253, 0.55);
+    p {
+      @apply min-w-0;
     }
 
-    /* Alternate sides on md+: odd cards left of the line, even cards right. */
-    &:nth-child(odd) .timeline-dot {
-      @apply md:left-auto md:-right-10 md:translate-x-1/2;
+    &.docked {
+      @apply translate-x-0;
     }
 
-    &:nth-child(even) {
-      @apply md:ml-auto;
-
-      .timeline-dot {
-        @apply md:-left-10 md:-translate-x-1/2;
-      }
+    &:not(.docked) .guide-avatar {
+      @apply hidden;
     }
   }
 
-  .timeline-card {
-    @apply rounded-2xl p-5 border border-white/10 bg-white/5 backdrop-blur-sm transition-colors hover:bg-white/8 hover:border-white/20;
+  /* Tiny Bit face shown when the bubble is docked */
+  .guide-avatar {
+    @apply relative mt-0.5 size-6 shrink-0 rounded-full bg-[#eef2f8];
 
-    h3 {
-      @apply mt-2 text-base font-semibold text-white;
-    }
-
-    .timeline-meta {
-      @apply flex items-center justify-between gap-3;
-    }
-
-    .timeline-period {
-      @apply font-roboto text-[10px] uppercase tracking-[0.2em] text-blue-300/70;
-    }
-
-    .timeline-tag {
-      @apply text-[10px] rounded-full px-2 py-0.5 border;
-
-      &.work {
-        @apply bg-blue-400/10 text-blue-200 border-blue-300/25;
-      }
-
-      &.education {
-        @apply bg-purple-400/10 text-purple-200 border-purple-300/25;
-      }
-    }
-
-    .timeline-place {
-      @apply mt-0.5 text-xs text-gray-500;
-    }
-
-    .timeline-desc {
-      @apply mt-3 text-sm text-gray-400 leading-relaxed;
+    &::after {
+      content: "";
+      @apply absolute inset-x-1 top-1.5 h-2.5 rounded-full bg-[#0a0f1f];
+      box-shadow: inset 4px 0 0 -2px #7dd3fc, inset -4px 0 0 -2px #7dd3fc;
     }
   }
 
-  /* Projects — featured rows, screenshot/text alternating sides */
-  .projects-list {
-    @apply flex flex-col gap-14 md:gap-20;
+  .bedroom-hint {
+    @apply fixed bottom-10 left-1/2 -translate-x-1/2 z-20 pointer-events-none rounded-full border border-white/15 bg-white/5 px-4 py-2 font-roboto text-xs uppercase tracking-[0.2em] text-white/80 backdrop-blur-md;
+    animation: bedroom-hint-pulse 2.4s ease-in-out infinite;
   }
 
-  .project-feature {
-    @apply grid items-center gap-8 md:grid-cols-2 md:gap-14;
+  /* Above the loader so visitors can skip while the room downloads. */
+  .bedroom-computer-tip {
+    @apply fixed bottom-10 left-1/2 -translate-x-1/2 z-20 flex items-center gap-4 rounded-full border border-white/15 bg-[#0c0a1c]/80 py-1.5 pl-1.5 pr-5 text-sm text-white/85 backdrop-blur-md;
 
-    /* Alternate sides: even rows show the visual on the right. */
-    &.flip .project-frame {
-      @apply md:order-last;
+    button {
+      @apply flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 text-xs transition hover:bg-white/20;
     }
   }
 
-  /* mac-style window chrome around the project visual. */
-  .project-frame {
-    @apply rounded-xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm shadow-2xl shadow-black/40 transition-colors hover:border-white/25;
+  /* Loading screen */
+  .bedroom-loader {
+    @apply fixed inset-0 z-30 col-center gap-5 bg-[#07060f] transition-opacity duration-700;
+
+    p {
+      @apply font-roboto text-xs uppercase tracking-[0.3em] text-white/60;
+    }
+
+    &.done {
+      @apply opacity-0 pointer-events-none;
+    }
   }
 
-  .project-frame-bar {
-    @apply flex items-center gap-1.5 px-3.5 py-2.5 bg-white/8 border-b border-white/10;
+  .bedroom-loader-bar {
+    @apply h-1 w-52 overflow-hidden rounded-full bg-white/15;
 
     span {
-      @apply size-2.5 rounded-full;
+      @apply block h-full rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-300 transition-[width] duration-300;
+    }
+  }
 
-      &:nth-child(1) {
-        background: #ff5f57;
-      }
-      &:nth-child(2) {
-        background: #febc2e;
-      }
-      &:nth-child(3) {
-        background: #28c840;
-      }
+  /* iPhone overlay (phone on the bed): About me + socials */
+  .iphone-wrap {
+    @apply fixed inset-0 z-20 col-center gap-4 pointer-events-none;
+  }
+
+  .iphone {
+    @apply pointer-events-auto rounded-[52px] bg-[#0b0b10] p-3 shadow-2xl ring-1 ring-white/15 select-text;
+    height: min(640px, 82vh);
+    aspect-ratio: 300 / 620;
+    animation: iphone-in 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .iphone-screen {
+    @apply relative h-full w-full overflow-hidden rounded-[40px] text-white;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    background: #1a1536; /* dark indigo, matches the room's walls */
+  }
+
+  .iphone-island {
+    @apply absolute top-2.5 left-1/2 z-10 h-6 w-24 -translate-x-1/2 rounded-full bg-black;
+  }
+
+  .iphone-status {
+    @apply absolute top-3 inset-x-0 z-10 flex justify-between px-7 text-[13px] font-semibold;
+  }
+
+  .iphone-status-icons {
+    @apply flex items-center gap-1;
+  }
+
+  .iphone-home {
+    @apply flex h-full flex-col px-5 pt-14;
+  }
+
+  /* iOS home-screen widgets: two squares side by side above the apps. */
+  .iphone-widgets {
+    @apply mb-7 grid grid-cols-2 gap-4;
+  }
+
+  .iphone-widget {
+    /* Frosted glass that takes on the wallpaper's indigo, like iOS widgets. */
+    @apply aspect-square rounded-[22px] border border-white/10 bg-white/10 backdrop-blur-xl;
+  }
+
+  .iphone-calendar {
+    @apply flex flex-col p-3.5;
+  }
+
+  .iphone-calendar-day {
+    @apply text-[11px] font-semibold uppercase tracking-wide text-[#ff453a];
+  }
+
+  .iphone-calendar-date {
+    @apply text-[44px] leading-none font-light text-white;
+  }
+
+  .iphone-calendar-month {
+    @apply mt-auto text-[11px] text-white/50;
+  }
+
+  .iphone-clock {
+    @apply p-2.5;
+
+    svg {
+      @apply h-full w-full;
+    }
+  }
+
+  .iphone-grid {
+    /* Three apps per row, spread evenly. */
+    @apply grid grid-cols-3 justify-items-center gap-y-5;
+  }
+
+  .iphone-app {
+    @apply flex flex-col items-center gap-1.5 text-[11px] text-white;
+
+    &:hover .iphone-icon {
+      @apply scale-105;
+    }
+  }
+
+  .iphone-icon {
+    @apply flex-center size-14 rounded-2xl shadow-lg transition-transform;
+
+    img {
+      @apply size-7 object-contain;
+    }
+  }
+
+  .iphone-icon-contacts {
+    @apply text-white;
+    background: linear-gradient(180deg, #a1a1aa, #52525b);
+  }
+
+  .iphone-icon-messages {
+    @apply text-white;
+    background: linear-gradient(180deg, #5cf777, #0abe3c);
+  }
+
+  /* Messages screen: header, chat thread, compose bar */
+  .iphone-messages {
+    @apply flex h-full flex-col overflow-hidden bg-black pt-11 text-white select-text;
+  }
+
+  .iphone-messages-head {
+    @apply relative flex shrink-0 flex-col items-center gap-1 border-b border-white/10 pt-1 pb-2 text-[11px] text-white/80;
+
+    img {
+      @apply size-11 rounded-full object-cover;
+    }
+
+    .iphone-back {
+      @apply absolute top-1/2 left-1 m-0 -translate-y-1/2;
+    }
+  }
+
+  .iphone-thread {
+    /* min-h-0 lets it scroll instead of pushing the compose bar off the phone. */
+    @apply flex min-h-0 flex-1 flex-col gap-1.5 overflow-y-auto px-3 py-3;
+    scrollbar-width: none;
+  }
+
+  .iphone-bubble {
+    @apply max-w-[78%] shrink-0 rounded-[18px] px-3 py-1.5 text-left text-[13px] leading-snug break-words whitespace-pre-wrap;
+    animation: iphone-bubble-in 0.25s ease-out both;
+
+    &.in {
+      @apply self-start bg-[#26252a];
+    }
+
+    &.out {
+      @apply self-end bg-[#0a84ff];
+    }
+  }
+
+  .iphone-compose {
+    @apply mx-3 mt-1 mb-7 flex shrink-0 items-center gap-1.5 rounded-full border border-white/15 bg-transparent py-1 pr-1 pl-3.5;
+
+    input {
+      @apply min-w-0 flex-1 bg-transparent text-[13px] text-white outline-none placeholder:text-white/35;
+    }
+
+    button {
+      @apply flex-center size-7 shrink-0 rounded-full bg-[#0a84ff] text-white transition-opacity disabled:opacity-30;
+    }
+  }
+
+  .iphone-home-bar {
+    @apply absolute bottom-2 left-1/2 h-1.5 w-32 -translate-x-1/2 rounded-full bg-white/80;
+  }
+
+  /* Contact card screen */
+  .iphone-contact {
+    @apply h-full overflow-y-auto bg-black px-4 pt-12 pb-8 text-white select-none cursor-grab;
+    /* No scrollbar: it scrolls like a phone, by dragging (useDragScroll). */
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &.dragging {
+      @apply cursor-grabbing;
+    }
+
+    a,
+    button {
+      @apply cursor-pointer;
+    }
+  }
+
+  .iphone-back {
+    @apply -ml-1 flex items-center text-sm text-[#0a84ff];
+  }
+
+  .iphone-contact-head {
+    @apply col-center mt-2 mb-4 text-center;
+
+    img {
+      @apply size-24 rounded-full object-cover;
+    }
+
+    h3 {
+      @apply mt-2 text-2xl font-semibold;
     }
 
     p {
-      @apply mx-auto -translate-x-4 text-[11px] tracking-wide text-gray-400;
+      @apply text-sm text-white/55;
     }
   }
 
-  .project-shot {
-    @apply w-full aspect-[16/10] object-cover object-top;
+  .iphone-actions {
+    @apply mt-3 flex gap-3;
   }
 
-  /* Fallback cover for projects without a screenshot. */
-  .project-cover {
-    @apply relative w-full aspect-[16/10] flex-center overflow-hidden;
+  .iphone-action {
+    @apply flex w-20 flex-col items-center gap-1 rounded-xl bg-[#1c1c1e] py-2 text-[11px] text-[#0a84ff];
 
-    &::before {
-      content: "";
-      @apply absolute inset-0;
-      background:
-        radial-gradient(
-          circle at 30% 20%,
-          rgb(255 255 255 / 0.25),
-          transparent 55%
-        ),
-        radial-gradient(circle at 80% 90%, rgb(0 0 0 / 0.35), transparent 60%);
-    }
-
-    .project-cover-initial {
-      @apply relative font-georama italic font-black text-white/25;
-      font-size: clamp(6rem, 12vw, 9rem);
-      line-height: 1;
-    }
-
-    .project-cover-icons {
-      @apply absolute bottom-4 right-4 flex gap-2;
+    .iphone-icon {
+      @apply size-8 rounded-full shadow-none;
 
       img {
-        @apply size-6 opacity-70 drop-shadow;
+        @apply size-4;
       }
     }
   }
 
-  .project-info {
-    .project-tagline {
-      @apply text-xs uppercase tracking-[0.2em] text-blue-300/70;
+  .iphone-rows {
+    @apply mb-3 overflow-hidden rounded-xl bg-[#1c1c1e] text-sm;
+
+    li {
+      @apply flex flex-col border-b border-white/10 px-3.5 py-2.5 last:border-b-0;
+    }
+
+    span {
+      @apply text-xs text-[#0a84ff];
+    }
+
+    a {
+      @apply text-[#0a84ff];
+    }
+  }
+
+  .iphone-notes {
+    @apply px-3.5 py-2.5;
+
+    p {
+      @apply mt-0.5 leading-relaxed text-white/85;
+    }
+  }
+
+  .iphone-close {
+    @apply pointer-events-auto flex items-center gap-1.5 rounded-full border border-white/15 bg-[#0c0a1c]/80 px-3.5 py-1.5 text-xs text-white/80 backdrop-blur-md transition hover:text-white;
+  }
+
+  /* Tech stack: the handheld console from the bed, an RPG inventory */
+  .handheld-wrap {
+    @apply fixed inset-0 z-20 col-center gap-4 pointer-events-none;
+  }
+
+  .handheld-back {
+    @apply pointer-events-auto flex items-center gap-1.5 rounded-full border border-white/15 bg-[#0c0a1c]/80 px-3.5 py-1.5 text-xs text-white/80 backdrop-blur-md transition hover:text-white;
+  }
+
+  .handheld-keys {
+    @apply font-roboto text-[11px] text-white/45;
+  }
+
+  .handheld {
+    @apply pointer-events-auto relative flex items-center gap-5 rounded-[44px] px-6 py-7 select-none;
+    width: min(820px, 94vw);
+    background: linear-gradient(160deg, #3a2f6b, #2b2350 55%, #221b42);
+    box-shadow:
+      0 30px 80px rgba(0, 0, 0, 0.6),
+      inset 0 2px 0 rgba(255, 255, 255, 0.12),
+      inset 0 -6px 0 rgba(0, 0, 0, 0.25);
+    animation: handheld-in 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hh-shoulder {
+    @apply absolute -top-2.5 h-5 w-24 rounded-t-xl bg-[#1d1838] font-pixel text-[9px] text-white/50 transition hover:text-white active:translate-y-0.5;
+
+    &.left { left: 48px; }
+    &.right { right: 48px; }
+  }
+
+  .hh-controls {
+    @apply flex w-28 shrink-0 flex-col items-center gap-8;
+  }
+
+  .hh-dpad {
+    @apply grid size-24 grid-cols-3 grid-rows-3;
+
+    button, span {
+      @apply bg-[#171330];
+    }
+
+    button {
+      @apply transition hover:bg-[#2a2450] active:bg-[#0e0b20];
+    }
+
+    .up { @apply col-start-2 row-start-1 rounded-t-md; }
+    .left { @apply col-start-1 row-start-2 rounded-l-md; }
+    span { @apply col-start-2 row-start-2; }
+    .right { @apply col-start-3 row-start-2 rounded-r-md; }
+    .down { @apply col-start-2 row-start-3 rounded-b-md; }
+  }
+
+  .hh-pill {
+    @apply rounded-full bg-[#171330] px-4 py-1 font-pixel text-[8px] uppercase text-white/50 transition hover:text-white;
+  }
+
+  .hh-ab {
+    @apply relative h-24 w-28;
+
+    button {
+      @apply absolute size-12 rounded-full font-pixel text-xs text-black/60 transition active:scale-95;
+      box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.25), 0 4px 10px rgba(0, 0, 0, 0.35);
+    }
+
+    .a { @apply right-0 top-0 bg-[#ff5d8f]; }
+    .b { @apply bottom-0 left-0 bg-[#ffd166]; }
+  }
+
+  .hh-brand {
+    @apply font-pixel text-[8px] lowercase tracking-wider text-white/30;
+  }
+
+  .hh-bezel {
+    @apply min-w-0 flex-1 rounded-2xl bg-[#100d22] p-3;
+    box-shadow: inset 0 0 0 2px #0a0816;
+  }
+
+  /* The LCD: deep indigo, scanlines, hard pixels everywhere */
+  .hh-screen {
+    @apply relative flex aspect-[4/3] flex-col gap-3 overflow-hidden rounded-md p-4 text-[#e8e4ff];
+    background: radial-gradient(ellipse at center, #241d4d 0%, #17123a 70%, #0f0b28 100%);
+    font-family: "VT323", monospace;
+    font-size: 20px;
+    line-height: 1.05;
+    animation: hh-power-on 0.6s ease-out 0.25s both;
+
+    &::after {
+      content: "";
+      @apply pointer-events-none absolute inset-0;
+      background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px 3px);
+    }
+  }
+
+  .pixel-icon {
+    image-rendering: pixelated;
+  }
+
+  .hh-header {
+    @apply flex flex-col gap-2;
+  }
+
+  .hh-title {
+    @apply font-pixel text-[11px] uppercase text-[#ffd166];
+  }
+
+  .hh-bags {
+    @apply flex flex-wrap gap-1.5;
+
+    button {
+      @apply border-2 border-[#3b3270] px-1.5 pt-0.5 text-[17px] text-[#8f86d0] transition hover:text-[#e8e4ff];
+
+      &.active {
+        @apply border-[#ffd166] bg-[#ffd166] text-[#17123a];
+      }
+    }
+  }
+
+  .hh-grid {
+    @apply grid grid-cols-[repeat(4,64px)] justify-center gap-2.5;
+
+    li {
+      @apply aspect-square;
+    }
+  }
+
+  .hh-slot {
+    @apply relative flex size-full items-center justify-center border-2 border-[#3b3270] bg-[#0f0b28]/70 transition-colors;
+
+    .pixel-icon {
+      @apply size-[60%];
+    }
+
+    &.empty {
+      @apply aspect-square border-dashed opacity-40;
+    }
+
+    &.selected {
+      @apply border-[#ffd166] bg-[#2d2560];
+
+      &::before {
+        content: "▶";
+        @apply absolute -left-1 top-1/2 -translate-x-full -translate-y-1/2 text-sm text-[#ffd166];
+        animation: hh-blink 0.8s steps(1) infinite;
+      }
+    }
+  }
+
+  .hh-dialog {
+    @apply flex-1 border-2 border-[#e8e4ff] bg-[#0f0b28]/80 px-3 py-2;
+    box-shadow: inset 0 0 0 2px #0f0b28, inset 0 0 0 4px #3b3270;
+  }
+
+  .hh-name {
+    @apply mb-1 font-pixel text-[11px] uppercase text-[#ffd166];
+  }
+
+  .hh-inspect {
+    @apply flex min-h-0 flex-1 gap-4;
+  }
+
+  .hh-inspect-icon {
+    @apply flex size-28 shrink-0 items-center justify-center border-2 border-[#ffd166] bg-[#0f0b28]/70;
+
+    .pixel-icon {
+      @apply size-20;
+    }
+  }
+
+  .hh-inspect-text {
+    @apply min-h-0 flex-1 overflow-hidden;
+  }
+
+  .hh-class {
+    @apply text-[17px] text-[#8f86d0];
+  }
+
+  .hh-label {
+    @apply mt-2 text-[16px] uppercase tracking-wider text-[#5ee6c4];
+  }
+
+  .hh-caret {
+    @apply ml-0.5 inline-block h-[0.9em] w-2 translate-y-0.5 bg-[#e8e4ff];
+    animation: hh-blink 0.8s steps(1) infinite;
+  }
+
+  .hh-footer {
+    @apply mt-auto flex justify-between text-[16px] text-[#8f86d0];
+  }
+
+  /* CV: the real PDF page, centred in front of the visitor like a sheet of paper */
+  .cv-card-wrap {
+    @apply fixed inset-0 z-20 col-center gap-3 pointer-events-none;
+  }
+
+  .cv-card-bar {
+    @apply pointer-events-auto flex items-center gap-2 rounded-full border border-white/15 bg-[#0c0a1c]/80 p-1.5 text-white/85 backdrop-blur-md;
+
+    button,
+    a {
+      @apply flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs transition hover:bg-white/20;
+
+      &.primary {
+        @apply bg-blue-600 hover:bg-blue-500;
+      }
+    }
+  }
+
+  .cv-card {
+    @apply pointer-events-auto flex-center overflow-hidden rounded-sm bg-white shadow-2xl;
+    animation: cv-card-in 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+
+    canvas {
+      @apply block cursor-auto;
+    }
+  }
+
+  .cv-card-note {
+    @apply px-10 font-roboto text-sm text-gray-500;
+  }
+
+  .cv-card-pages {
+    @apply pointer-events-auto flex items-center gap-2 rounded-full border border-white/15 bg-[#0c0a1c]/80 px-2 py-1 font-roboto text-xs text-white/70 backdrop-blur-md;
+
+    button {
+      @apply rounded-full p-0.5 text-white transition hover:bg-white/15 disabled:opacity-30 disabled:hover:bg-transparent;
+    }
+  }
+
+  /* Projects: the back of the picked poster, flipped over in front of the wall */
+  .project-card-wrap {
+    @apply fixed inset-0 z-20 flex-center pointer-events-none;
+    perspective: 1400px;
+  }
+
+  .project-card {
+    @apply pointer-events-auto relative flex w-[min(380px,88vw)] flex-col rounded-md p-3 pb-4 text-[#e8e4ff] shadow-2xl ring-1 ring-white/10 select-text;
+    max-height: 82vh;
+    background:
+      radial-gradient(circle at 20% 0%, rgb(124 140 255 / 0.14), transparent 60%),
+      #17132e; /* dark indigo, like the phone and the room's walls */
+    transform-origin: center;
+    animation: project-card-flip-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.22s both;
+
+    h3 {
+      @apply text-2xl font-bold leading-tight text-white;
+      font-family: Georgia, serif;
+    }
+
+    /* Leaving (ProjectCard FLIP_MS = 380ms): turn edge-on, then the 3D poster
+       picks up the turn on its way back to the wall. */
+    &.flipping {
+      @apply pointer-events-none;
+      animation: project-card-flip-out 0.36s cubic-bezier(0.55, 0, 0.75, 0.2) both;
+    }
+  }
+
+  .project-card-back {
+    @apply absolute -top-11 left-0 flex items-center gap-1.5 rounded-full border border-white/15 bg-[#0c0a1c]/80 px-3.5 py-1.5 text-xs text-white/80 backdrop-blur-md transition hover:text-white;
+  }
+
+  /* A strip of tape left over from hanging it on the wall. */
+  .project-card-tape {
+    @apply absolute -top-3 left-1/2 h-6 w-24 -translate-x-1/2 -rotate-3 bg-white/15 shadow-sm backdrop-blur-sm;
+  }
+
+  .project-card-shot {
+    @apply aspect-[16/10] w-full shrink-0 rounded-[2px] object-cover object-top;
+  }
+
+  .project-card-cover {
+    @apply flex-center p-4 text-center text-3xl font-bold text-white/90;
+    font-family: Georgia, serif;
+  }
+
+  .project-card-body {
+    @apply flex flex-col gap-1.5 px-2 pt-4 text-[15px] leading-relaxed text-[#e8e4ff]/75;
+  }
+
+  .project-card-stack {
+    @apply mt-1 font-roboto text-[11px] uppercase tracking-wider text-[#9be7ff]/70;
+  }
+
+  .project-card-footer {
+    @apply mt-4 flex items-center justify-between border-t border-white/10 px-2 pt-3;
+  }
+
+  .project-card-link {
+    @apply inline-flex items-center gap-1 rounded-md bg-[#e8e4ff] px-3 py-1.5 text-sm font-semibold text-[#17132e] transition hover:bg-white;
+  }
+
+  .project-card-nav {
+    /* bg/padding/blur reset: the desktop menu bar's global nav style leaks in */
+    @apply ml-auto flex items-center gap-1 bg-transparent p-0 font-roboto text-xs text-[#e8e4ff]/55 backdrop-blur-none;
+
+    button {
+      @apply rounded-md p-1 text-[#e8e4ff] transition hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-transparent;
+    }
+  }
+
+  /* Timeline: the picked sticky note, unfolded in front of the board */
+  .note-card-wrap {
+    @apply fixed inset-0 z-20 flex-center pointer-events-none;
+  }
+
+  .note-card {
+    --note: #ffd166;
+    @apply pointer-events-auto relative w-[min(420px,88vw)] text-[#2a2340] select-text;
+    perspective: 1200px;
+    animation: note-card-arrive 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+
+    &.education {
+      --note: #7dd3fc;
     }
 
     h3 {
-      @apply mt-2 text-2xl md:text-3xl font-semibold text-white;
+      @apply mt-2 text-xl font-bold leading-snug;
     }
 
-    .project-desc {
-      @apply mt-4 text-sm md:text-base text-gray-400 leading-relaxed;
+    /* Leaving a note (TimelineCard FOLD_MS = 620ms): the details fold back up,
+       then the note shrinks away before the 3D note returns to its pin. */
+    &.folding {
+      @apply pointer-events-none;
+      animation: note-card-leave 0.3s cubic-bezier(0.55, 0, 0.75, 0.2) 0.32s both;
     }
 
-    .project-stack {
-      @apply mt-5 flex flex-wrap gap-2;
-
-      li {
-        @apply flex items-center gap-1.5 text-xs rounded-full px-2.5 py-1 bg-white/8 text-gray-300 border border-white/10;
-
-        img {
-          @apply size-3.5 object-contain;
-        }
-      }
-    }
-
-    .project-link {
-      @apply mt-6 inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold bg-blue-500/15 border border-blue-300/30 text-blue-200 transition-colors hover:bg-blue-500/25 hover:text-white;
+    &.folding .note-card-fold {
+      animation: note-card-refold 0.32s cubic-bezier(0.55, 0, 0.75, 0.2) both;
     }
   }
 
-  /* Pinned laptop reveal section */
-  .landing-pc {
-    @apply relative w-full;
-    height: 260vh;
+  .note-card-back {
+    @apply absolute -top-11 left-0 flex items-center gap-1.5 rounded-full border border-white/15 bg-[#0c0a1c]/80 px-3.5 py-1.5 text-xs text-white/80 backdrop-blur-md transition hover:text-white;
   }
 
-  .landing-stage {
-    @apply sticky top-0 h-dvh w-full overflow-hidden flex-center;
+  /* The note's face: what was written on it on the board. */
+  .note-card-face {
+    @apply relative rounded-t-sm px-6 pt-8 pb-5 shadow-2xl;
+    background: var(--note);
   }
 
-  .landing-canvas {
-    @apply absolute inset-0 z-10 opacity-0;
+  .note-card-pin {
+    @apply absolute top-2.5 left-1/2 size-3.5 -translate-x-1/2 rounded-full bg-[#e5484d] shadow;
   }
 
-  .landing-glow {
-    @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0 opacity-0 pointer-events-none;
-    width: 80vmax;
-    height: 80vmax;
-    background: radial-gradient(
-      circle,
-      rgba(130, 160, 230, 0.38) 0%,
-      rgba(80, 100, 160, 0.14) 35%,
-      rgba(0, 0, 0, 0) 70%
-    );
+  .note-card-meta {
+    @apply flex items-center gap-2 font-roboto text-xs text-[#2a2340]/65;
   }
 
-  .hero-inner {
-    @apply relative z-20 col-center text-center px-6 max-w-3xl;
+  .note-card-tag {
+    @apply rounded-full bg-[#2a2340]/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#2a2340];
   }
 
-  .hero-greeting {
-    @apply text-2xl font-georama font-light text-gray-300;
+  .note-card-year {
+    @apply mt-3 text-5xl font-bold leading-none;
+    font-family: Georgia, serif;
   }
 
-  .hero-name {
-    @apply mt-2 leading-none text-white;
+  .note-card-place {
+    @apply mt-1 text-sm text-[#2a2340]/65;
   }
 
-  .hero-role {
-    @apply mt-4 text-xl font-roboto tracking-wide text-gray-200;
+  /* The folded-under half that swings open with the details. */
+  .note-card-fold {
+    @apply rounded-b-sm border-t border-dashed border-[#2a2340]/25 px-6 pt-4 pb-5 text-[15px] leading-relaxed shadow-2xl;
+    background: linear-gradient(to bottom, rgb(0 0 0 / 0.07), transparent 22px), var(--note);
+    transform-origin: top center;
+    animation: note-card-unfold 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.55s both;
   }
 
-  .hero-bio {
-    @apply mt-5 max-w-xl text-base text-gray-400 leading-relaxed;
-  }
+  .note-card-nav {
+    /* bg/padding/blur reset: the desktop menu bar's global nav style leaks in */
+    @apply mt-5 flex items-center justify-between bg-transparent p-0 font-roboto text-xs text-[#2a2340]/60 backdrop-blur-none;
 
-  /* Action row: quiet icon socials, then the two labeled CTAs. */
-  .hero-actions {
-    @apply mt-8 flex flex-wrap items-center justify-center gap-3 pointer-events-auto;
-  }
-
-  .hero-social {
-    @apply flex-center size-11 rounded-full border border-white/10 transition-transform hover:-translate-y-0.5 hover:scale-105;
-
-    img {
-      @apply size-5 object-contain;
+    button {
+      @apply flex items-center gap-0.5 rounded-md px-2 py-1 font-semibold text-[#2a2340] transition hover:bg-[#2a2340]/10 disabled:opacity-30 disabled:hover:bg-transparent;
     }
   }
 
-  .hero-actions-divider {
-    @apply hidden sm:block w-px h-6 bg-white/15;
+  .bedroom-error {
+    @apply fixed inset-0 z-30 col-center gap-2 font-roboto text-sm text-white/70;
   }
 
-  /* Primary CTA: solid accent — the resume is the main recruiter action. */
-  .hero-resume {
-    @apply flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-white bg-blue-600 shadow-lg shadow-blue-500/25 transition hover:bg-blue-500 hover:-translate-y-0.5;
-  }
-
-  .hero-scroll-cue {
-    @apply mt-12 col-center gap-1 text-xs uppercase tracking-widest text-gray-400;
-  }
-
-  /* Hint shown below the laptop. Purely informative; clicking the 3D model enters. */
-  .landing-tip {
-    @apply absolute left-1/2 bottom-20 -translate-x-1/2 z-30 opacity-0 pointer-events-none text-xs uppercase tracking-[0.25em] text-white/70;
-    animation: tip-pulse 2.4s ease-in-out infinite;
-  }
-
-  .landing-fade {
+  .bedroom-fade {
     @apply fixed inset-0 z-40 bg-black opacity-0 pointer-events-none;
   }
 
@@ -1144,38 +1421,294 @@ html.dark body {
     p {
       @apply text-sm text-center font-roboto text-gray-200;
     }
+
+    button {
+      @apply mx-auto mt-2 block rounded-full bg-white/90 px-3.5 py-1.5 text-xs font-medium text-[#17132e];
+    }
+  }
+
+  /* Quick view: the whole portfolio on one page */
+  .bedroom-quick {
+    @apply fixed top-5 left-5 z-[35] flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs text-white/70 backdrop-blur-md transition hover:bg-white/10 hover:text-white;
+  }
+
+  /* Ruled index card under lamp light: cool paper, indigo ink, a pink margin
+     line. One line of text per 28px rule; section names live in the margin. */
+  .quickview-wrap {
+    @apply fixed inset-0 z-[60] flex justify-center overflow-y-auto px-4 py-12 backdrop-blur-sm max-sm:px-3 max-sm:py-4;
+    background: rgb(7 6 15 / 0.72);
+    animation: quickview-fade 0.25s ease-out;
+  }
+
+  .quickview {
+    --rule: 28px;
+    --margin: 128px;
+    --ink: #231d5c;
+    --ink-soft: #5d5a8c;
+    --paper: #eceef8;
+    --ruling: #cdd3ee;
+    --margin-line: #e48aa3;
+
+    @apply relative h-fit w-full max-w-[680px] rounded-[3px] select-text;
+    padding: calc(var(--rule) * 2) 48px calc(var(--rule) * 2) calc(var(--margin) + 24px);
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 15px;
+    line-height: var(--rule);
+    color: var(--ink);
+    background:
+      linear-gradient(90deg, transparent calc(var(--margin) - 1px), var(--margin-line) calc(var(--margin) - 1px), var(--margin-line) var(--margin), transparent var(--margin)),
+      repeating-linear-gradient(transparent 0 calc(var(--rule) - 1px), var(--ruling) calc(var(--rule) - 1px) var(--rule)),
+      var(--paper);
+    background-position: 0 0, 0 calc(var(--rule) * 2 + 6px), 0 0;
+    box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.7);
+    animation: quickview-in 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+
+    a {
+      @apply underline decoration-1 underline-offset-[5px] transition-colors;
+      text-decoration-color: color-mix(in srgb, var(--ink) 35%, transparent);
+
+      &:hover {
+        text-decoration-color: var(--ink);
+      }
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--margin-line);
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 640px) {
+      --margin: 20px;
+      padding: var(--rule) 20px var(--rule) calc(var(--margin) + 16px);
+      background-position: 0 0, 0 calc(var(--rule) + 6px), 0 0;
+    }
+  }
+
+  .quickview-close {
+    @apply flex-center absolute top-3 right-3 size-9 rounded-full transition-colors;
+    color: var(--ink-soft);
+
+    &:hover {
+      color: var(--ink);
+      background: rgb(35 29 92 / 0.08);
+    }
+  }
+
+  .quickview-head {
+    @apply flex items-start justify-between gap-6;
+
+    h2 {
+      font-size: 44px;
+      line-height: calc(var(--rule) * 2);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      font-variation-settings: "wdth" 85;
+    }
+
+    p {
+      color: var(--ink-soft);
+    }
+
+    /* Clipped on like a photo on a form. */
+    img {
+      @apply shrink-0 object-cover;
+      width: 66px;
+      height: calc(var(--rule) * 3);
+      margin-right: 8px;
+      transform: rotate(2.5deg);
+      border: 4px solid #fff;
+      box-shadow: 0 6px 14px -6px rgb(35 29 92 / 0.45);
+    }
+
+    @media (max-width: 640px) {
+      h2 {
+        font-size: 32px;
+      }
+
+      img {
+        width: 56px;
+        height: calc(var(--rule) * 2.5);
+      }
+    }
+  }
+
+  .quickview-bio {
+    @apply max-w-[52ch];
+    margin-top: calc(var(--rule) / 2);
+  }
+
+  .quickview-actions {
+    @apply flex flex-wrap items-center gap-x-5;
+    margin-top: var(--rule);
+    height: auto;
+  }
+
+  .quickview .quickview-cv {
+    @apply flex items-center gap-2 rounded-full px-4 no-underline;
+    line-height: calc(var(--rule) - 2px);
+    margin-right: 4px;
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 600;
+
+    &:hover {
+      background: #352c86;
+    }
+  }
+
+  .quickview-row {
+    @apply relative;
+    margin-top: var(--rule);
+
+    /* Section name written in the margin, left of the pink line. */
+    h3 {
+      @apply absolute text-right;
+      left: calc(-1 * var(--margin) - 24px);
+      width: calc(var(--margin) - 16px);
+      font-weight: 600;
+      color: var(--margin-line);
+      filter: saturate(1.3) brightness(0.85);
+    }
+
+    li {
+      @apply max-w-[60ch];
+    }
+
+    strong {
+      font-weight: 600;
+    }
+
+    a {
+      font-weight: 600;
+    }
+
+    em {
+      @apply not-italic;
+      color: var(--ink-soft);
+      margin-right: 6px;
+    }
+
+    time {
+      @apply block text-sm;
+      color: var(--ink-soft);
+    }
+
+    @media (max-width: 640px) {
+      h3 {
+        @apply static text-left;
+        width: auto;
+      }
+    }
   }
 }
 
-/* Keyframes must live at the top level — nesting them inside #landing makes
+/* Keyframes must live at the top level — nesting them inside #bedroom makes
    the production minifier (Lightning CSS) drop the parent rule's declarations. */
-@keyframes stars-drift {
-  from { background-position: 0 0; }
-  to { background-position: 200px 400px; }
+@keyframes bedroom-hint-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
-@keyframes tip-pulse {
-  0%, 100% { text-shadow: 0 0 10px rgba(120, 170, 255, 0.35); }
-  50% { text-shadow: 0 0 22px rgba(120, 170, 255, 0.9); }
+@keyframes note-card-arrive {
+  from { opacity: 0; transform: scale(0.4) rotate(-5deg); }
+  to { opacity: 1; transform: scale(1) rotate(-1deg); }
 }
 
-@keyframes orbit-spin {
-  to { transform: rotate(360deg); }
+@keyframes note-card-refold {
+  from { opacity: 1; transform: rotateX(0deg); }
+  to { opacity: 0.3; transform: rotateX(-100deg); }
 }
 
-@keyframes orbit-spin-rev {
-  to { transform: rotate(-360deg); }
+@keyframes note-card-leave {
+  from { opacity: 1; transform: scale(1) rotate(-1deg); }
+  to { opacity: 0; transform: scale(0.4) rotate(-5deg); }
 }
 
-@keyframes orbit-detail-in {
-  from { opacity: 0; transform: translateY(6px) scale(0.96); }
+@keyframes note-card-unfold {
+  from { opacity: 0.3; transform: rotateX(-100deg); }
+  50% { opacity: 1; }
+  to { opacity: 1; transform: rotateX(0deg); }
+}
+
+@keyframes iphone-in {
+  from { opacity: 0; transform: translateY(40px) scale(0.96); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Opacity only — the item's transform carries its position on the ring. */
-@keyframes orbit-item-in {
+@keyframes handheld-in {
+  from { opacity: 0; transform: translateY(70px) rotateX(18deg) scale(0.94); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes hh-power-on {
+  0% { filter: brightness(3); clip-path: inset(49% 0 49% 0); }
+  50% { filter: brightness(2); clip-path: inset(0 0 0 0); }
+  100% { filter: none; clip-path: inset(0 0 0 0); }
+}
+
+@keyframes hh-blink {
+  50% { opacity: 0; }
+}
+
+@keyframes project-card-flip-in {
+  from { opacity: 0; transform: rotateY(-90deg) scale(0.85); }
+  40% { opacity: 1; }
+  to { opacity: 1; transform: rotateY(0deg) scale(1); }
+}
+
+@keyframes project-card-flip-out {
+  from { opacity: 1; transform: rotateY(0deg) scale(1); }
+  to { opacity: 0.4; transform: rotateY(90deg) scale(0.85); }
+}
+
+@keyframes cv-card-in {
+  from { opacity: 0; transform: translateY(40px) rotate(-2deg) scale(0.92); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes cv-pickup-bob {
+  0%, 100% { transform: translateY(0); opacity: 0.75; }
+  50% { transform: translateY(-5px); opacity: 1; }
+}
+
+@keyframes guide-bubble-in {
+  from { opacity: 0; scale: 0.9; }
+  to { opacity: 1; scale: 1; }
+}
+
+@keyframes iphone-bubble-in {
+  from { opacity: 0; transform: translateY(6px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes quickview-fade {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+@keyframes quickview-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #bedroom .bedroom-hint,
+  #bedroom .iphone,
+  #bedroom .iphone-bubble,
+  #bedroom .quickview-wrap,
+  #bedroom .quickview,
+  #bedroom .handheld,
+  #bedroom .project-card,
+  #bedroom .cv-card,
+  #bedroom .cv-pickup-hint,
+  #bedroom .guide-bubble,
+  #bedroom .hh-screen,
+  #bedroom .hh-slot.selected::before,
+  #bedroom .hh-caret,
+  #bedroom .note-card,
+  #bedroom .note-card-fold {
+    animation: none;
+  }
 }
 
 /* ─── macOS boot screen ───────────────────────────────────────────── */

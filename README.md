@@ -1,6 +1,6 @@
 # João's Portfolio
 
-An interactive portfolio built as a macOS desktop. Visitors land on a scroll-driven 3D MacBook, click to "enter the pc", watch it boot, and end up on a full desktop environment with draggable windows, a dock, a working terminal, and a PDF viewer for my CV.
+An interactive portfolio built as a macOS desktop. Visitors land in a first-person 3D bedroom at night, click objects around the room to explore my timeline, tech stack, projects, CV and socials, then click the laptop on the desk to "enter the pc", watch it boot, and end up on a full desktop environment with draggable windows, a dock, a working terminal, and a PDF viewer for my CV.
 
 **Live:** [joaohcpereiraa.github.io/portfolio](https://joaohcpereiraa.github.io/portfolio/)
 
@@ -8,7 +8,7 @@ An interactive portfolio built as a macOS desktop. Visitors land on a scroll-dri
 
 ## Features
 
-**The intro sequence** — Four gated phases (`landing → entering → booting → desktop`) driven by a Zustand store. The landing page renders a real `.glb` MacBook model with `@react-three/fiber`; clicking the CTA zooms the camera into the screen, cuts to an Apple-logo boot screen, and hands off to the desktop. The phase is persisted in `sessionStorage`, so a refresh drops you straight back onto the desktop instead of replaying the whole intro.
+**The intro sequence** — Four gated phases (`landing → entering → booting → desktop`) driven by a Zustand store. The landing is a 3D bedroom built with `@react-three/fiber` (drag to look around, bloom + hover outlines via `@react-three/postprocessing`); clicking the laptop's screen zooms the camera into it, cuts to an Apple-logo boot screen, and hands off to the desktop. The phase is persisted in `sessionStorage`, so a refresh drops you straight back onto the desktop instead of replaying the whole intro.
 
 **The desktop** — Draggable, focusable windows with proper z-index stacking, a dock, a navbar, a control center, and a lock screen.
 
@@ -34,7 +34,7 @@ An interactive portfolio built as a macOS desktop. Visitors land on a scroll-dri
 | Styling | Tailwind CSS 4 |
 | State | Zustand (+ immer) |
 | Animation | GSAP (Draggable, `@gsap/react`) |
-| 3D | Three.js, `@react-three/fiber`, `@react-three/drei` |
+| 3D | Three.js, `@react-three/fiber`, `@react-three/drei`, `@react-three/postprocessing` |
 | Misc | react-pdf, lucide-react, react-tooltip, dayjs, clsx |
 
 ---
@@ -55,7 +55,7 @@ store/
 ├── theme.js      light/dark
 ├── network.js    online/offline detection
 ├── location.js   Finder navigation
-└── landing.js    landing scroll state
+└── bedroom.js    bedroom focus / hover / hint state
 ```
 
 ### Project structure
@@ -65,7 +65,7 @@ src/
 ├── Experience.jsx        phase gate (landing | booting | desktop)
 ├── App.jsx               the desktop
 ├── components/
-│   ├── landing/          Hero, MacbookScene, Journey, Projects, Skills
+│   ├── bedroom/          3D room: Room, Furniture, CameraRig, Clickable, items/, panels/
 │   ├── Dock, Navbar, BootScreen, LockScreen, ControlCenter, ...
 ├── windows/              Terminal, Safari, Finder, Resume, Contact, ...
 ├── hoc/WindowWrapper.jsx window behaviour (drag, focus, animate)
