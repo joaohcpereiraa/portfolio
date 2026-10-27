@@ -1,0 +1,47 @@
+{
+  "name": "João Pereira",
+  "role": "Full-Stack Developer",
+  "bio": "Software Engineer graduated from ISEP, currently studying for an MSc in Cybersecurity & System Administration.",
+  "timeline": [
+    {
+      "id": 1,
+      "type": "education",
+      "period": "Sep 2022 — Jun 2025",
+      "title": "BSc in Informatics Engineering",
+      "place": "ISEP — Instituto Superior de Engenharia do Porto",
+      "description": "Bachelor's degree in Informatics Engineering, covering software engineering, algorithms, databases and distributed systems."
+    },
+    {
+      "id": 2,
+      "type": "work",
+      "period": "Jun 2024 — Aug 2024",
+      "title": "Software Engineer · Summer Internship",
+      "place": "INESC TEC",
+      "description": "Built a VR MVP in Unity for loading, manipulating and inspecting 3D models, letting wind-turbine engineers inspect motors and components virtually."
+    },
+    {
+      "id": 3,
+      "type": "work",
+      "period": "Feb 2025 — Jun 2025",
+      "title": "Junior Full-Stack Engineer · Internship",
+      "place": "Its Possible Tech",
+      "description": "Developed full-stack apps with React, Next.js, Node.js, Express and TypeScript, built REST APIs and shipped LLM-powered features from implementation to deploy."
+    },
+    {
+      "id": 4,
+      "type": "work",
+      "period": "Jul 2025 — Jul 2026",
+      "title": "Junior Full-Stack Software Engineer",
+      "place": "Its Possible Tech",
+      "description": "Built products end-to-end with React, Next.js, Node.js and TypeScript, maintained AWS serverless infrastructure and integrated payment gateways and AI solutions."
+    },
+    {
+      "id": 5,
+      "type": "education",
+      "period": "2026 — 2028 (expected)",
+      "title": "MSc in Cybersecurity & System Administration",
+      "place": "ISEP — Instituto Superior de Engenharia do Porto",
+      "description": "Currently deepening my focus on security, networks and systems administration."
+    }
+  ]
+}
