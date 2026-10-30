@@ -2,13 +2,14 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Html, useProgress } from "@react-three/drei";
 import * as THREE from "three";
-import useBootStore from "#store/boot";
-import useBedroomStore from "#store/bedroom";
-import Robot from "../Robot";
-import { reducedMotion } from "../motion";
-import { GREETING } from "./lines";
+import useBootStore from "#shared/store/boot";
+import useBedroomStore from "../../store/useBedroomStore";
+import Robot from "./Robot";
+import { reducedMotion } from "../../utils/motion";
+import { GREETING } from "../../data/guideLines";
+import useTypewriter from "../../hooks/useTypewriter";
+import { canInteract, isDrag } from "../../utils/pointer";
 
-const CLICK_THRESHOLD = 6; // px of movement below which a press counts as a click
 const SCALE = 0.088; // robot model -> metres (~0.25 m tall)
 const SEAT_DROP = 0.084; // the robot's seat sits this far below its centre
 
@@ -39,15 +40,7 @@ const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
 const headingTo = (from, to) => Math.atan2(to.x - from.x, to.z - from.z);
 
 // Types `text` out a few letters at a time.
-const Typed = ({ text }) => {
-  const [count, setCount] = useState(reducedMotion ? text.length : 0);
-  useEffect(() => {
-    if (reducedMotion) return;
-    const id = setInterval(() => setCount((c) => Math.min(c + 2, text.length)), 28);
-    return () => clearInterval(id);
-  }, [text]);
-  return text.slice(0, count);
-};
+const Typed = ({ text }) => useTypewriter(text, 28);
 
 // Bit, the astronaut-bot: when someone arrives it takes off from the shelf,
 // hovers in front of them to say welcome, then flies back and stays quiet,
@@ -178,14 +171,14 @@ const Guide = () => {
 
   const handleOver = (e) => {
     e.stopPropagation();
-    if (useBootStore.getState().phase === "landing") useBedroomStore.getState().setHovered("guide");
+    if (canInteract()) useBedroomStore.getState().setHovered("guide");
   };
   const handleOut = () => {
     if (useBedroomStore.getState().hovered === "guide") useBedroomStore.getState().setHovered(null);
   };
   const handleClick = (e) => {
     e.stopPropagation();
-    if (useBootStore.getState().phase === "landing" && e.delta <= CLICK_THRESHOLD) wave(1.8);
+    if (canInteract() && !isDrag(e)) wave(1.8);
   };
 
   return (
