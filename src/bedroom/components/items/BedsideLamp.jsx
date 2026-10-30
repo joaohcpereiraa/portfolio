@@ -1,37 +1,17 @@
-import { useState } from "react";
 import * as THREE from "three";
-import useBootStore from "#store/boot";
-import useBedroomStore from "#store/bedroom";
+import useLampSwitch from "../../hooks/useLampSwitch";
 
-const CLICK_THRESHOLD = 6; // px of movement below which a press counts as a click
 const BULB_ON = [3, 1.9, 0.9];
 const BULB_OFF = [0.3, 0.27, 0.22]; // unlit glass
 
 // Small bedside lamp on the nightstand: a round ceramic base, a thin brass
-// stem and a fabric drum shade lit warm from inside. Click it to switch it
-// off and on (not a portfolio item, so no marker or focus). y 0 = nightstand top.
+// stem and a fabric drum shade lit warm from inside. Starts off; click it to
+// switch it on and off. y 0 = nightstand top.
 const BedsideLamp = () => {
-  const [on, setOn] = useState(false); // starts off; the visitor can switch it on
-
-  const canInteract = () => useBootStore.getState().phase === "landing";
-
-  const handleOver = (e) => {
-    e.stopPropagation();
-    if (canInteract()) useBedroomStore.getState().setHovered("lamp");
-  };
-  const handleOut = () => {
-    if (useBedroomStore.getState().hovered === "lamp") useBedroomStore.getState().setHovered(null);
-  };
-  // Stop the click here so it doesn't reach the room (which would close
-  // whatever is open).
-  const handleClick = (e) => {
-    e.stopPropagation();
-    if (!canInteract() || e.delta > CLICK_THRESHOLD) return;
-    setOn((v) => !v);
-  };
+  const { on, handlers } = useLampSwitch("lamp");
 
   return (
-    <group onPointerOver={handleOver} onPointerOut={handleOut} onClick={handleClick}>
+    <group {...handlers}>
       <mesh position={[0, 0.055, 0]}>
         <sphereGeometry args={[0.06, 20, 16]} />
         <meshStandardMaterial color="#cfc8f0" roughness={0.45} />

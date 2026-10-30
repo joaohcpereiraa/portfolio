@@ -1,14 +1,11 @@
 import { RoundedBox } from "@react-three/drei";
-import * as THREE from "three";
 import Bed from "./Bed";
 import Door from "./Door";
-
-const WARM = [3, 1.9, 0.9];
 
 const Wood = (props) => <meshStandardMaterial color="#4a3562" roughness={0.7} {...props} />;
 
 // Everything in the room that isn't clickable: bed (Bed.jsx), desk, chair, nightstand,
-// shelf planks, lamp, plant, fairy lights. Built from simple shapes in the
+// shelf planks, plant, fairy lights. Built from simple shapes in the
 // late-night palette.
 const Furniture = () => (
   <group>
@@ -31,26 +28,6 @@ const Furniture = () => (
           <Wood color="#3e2d55" />
         </mesh>
       ))}
-      {/* Desk lamp */}
-      <group position={[-0.52, 0.75, -0.12]}>
-        <mesh position={[0, 0.01, 0]}>
-          <cylinderGeometry args={[0.07, 0.08, 0.02, 20]} />
-          <meshStandardMaterial color="#2b2545" />
-        </mesh>
-        <mesh position={[0, 0.17, 0]}>
-          <cylinderGeometry args={[0.008, 0.008, 0.32, 8]} />
-          <meshStandardMaterial color="#2b2545" />
-        </mesh>
-        <mesh position={[0, 0.34, 0]} rotation={[Math.PI, 0, 0]}>
-          <coneGeometry args={[0.09, 0.11, 20, 1, true]} />
-          <meshStandardMaterial color="#2b2545" side={THREE.DoubleSide} />
-        </mesh>
-        <mesh position={[0, 0.3, 0]}>
-          <sphereGeometry args={[0.03, 12, 12]} />
-          <meshBasicMaterial color={WARM} toneMapped={false} />
-        </mesh>
-        <pointLight position={[0, 0.25, 0]} intensity={1.8} distance={2.2} color="#ffb46b" />
-      </group>
     </group>
 
     {/* Desk chair, pulled out a little */}
