@@ -1,8 +1,9 @@
 {
     "compilerOptions": {
-        "baseUrl": ".",
         "paths": {
-            "#*": ["src/*"]
+            "#constants": ["./src/shared/constants"],
+            "#constants/*": ["./src/shared/constants/*"],
+            "#*": ["./src/*"]
         }
     },
     "include": ["src"]

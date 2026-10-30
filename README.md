@@ -22,7 +22,7 @@ An interactive portfolio built as a macOS desktop. Visitors land in a first-pers
 | Text / Image | Viewers for text and image files opened from Finder |
 | NetworkError | Auto-appears when the browser goes offline |
 
-**Terminal commands read from the same source of truth as the UI** — `src/constants/index.js` feeds both the rendered components and the terminal output, so project and skill data never drifts between the two.
+**Terminal commands read from the same source of truth as the UI** — `src/shared/constants/index.js` feeds both the rendered components and the terminal output, so project and skill data never drifts between the two.
 
 ---
 
@@ -41,40 +41,62 @@ An interactive portfolio built as a macOS desktop. Visitors land in a first-pers
 
 ## Architecture
 
-`Experience.jsx` is the entry gate — it reads the boot phase and renders either the landing, the boot screen, or `App.jsx` (the desktop).
+`Experience.jsx` is the entry gate — it reads the boot phase and renders either the 3D bedroom, the boot screen, or `macos/App.jsx` (the desktop).
 
-Windows are composed with a `WindowWrapper` HOC (`src/hoc/WindowWrapper.jsx`) that wraps any component with GSAP open/close animation, GSAP `Draggable`, and click-to-focus. Adding a new window means writing the component, wrapping it, and registering it in `WINDOW_CONFIG`. Window open/close/focus state and z-index ordering live in `src/store/window.js`.
+Windows are composed with a `WindowWrapper` HOC (`src/macos/hoc/WindowWrapper.jsx`) that wraps any component with GSAP open/close animation, GSAP `Draggable`, and click-to-focus. Adding a new window means writing the component, wrapping it, and registering it in `WINDOW_CONFIG`. Window open/close/focus state and z-index ordering live in `src/macos/store/window.js`.
 
-State is split into small focused stores rather than one global blob:
+State is split into small focused stores rather than one global blob, each kept with the part of the site it belongs to:
 
 ```
-store/
-├── boot.js       intro phases + sessionStorage persistence
-├── window.js     open/close/focus, z-index stacking
-├── ui.js         lock screen
-├── theme.js      light/dark
-├── network.js    online/offline detection
-├── location.js   Finder navigation
-└── bedroom.js    bedroom focus / hover / hint state
+shared/store/boot.js      intro phases + sessionStorage persistence
+bedroom/store/            bedroom focus / hover / hint state, picked-item selector, laptop screen position
+macos/store/
+├── window.js             open/close/focus, z-index stacking
+├── ui.js                 lock screen
+├── theme.js              light/dark
+├── network.js            online/offline detection
+└── location.js           Finder navigation
 ```
 
 ### Project structure
 
+One folder per part of the site, plus `shared/` for what more than one of them uses:
+
 ```
 src/
-├── Experience.jsx        phase gate (landing | booting | desktop)
-├── App.jsx               the desktop
-├── components/
-│   ├── bedroom/          3D room: Room, Furniture, CameraRig, Clickable, items/, panels/
-│   ├── Dock, Navbar, BootScreen, LockScreen, ControlCenter, ...
-├── windows/              Terminal, Safari, Finder, Resume, Contact, ...
-├── hoc/WindowWrapper.jsx window behaviour (drag, focus, animate)
-├── store/                zustand stores
-├── constants/index.js    all portfolio content
-└── utils/assetUrl.js     base-path-aware asset resolver
+├── main.jsx · Experience.jsx · index.css   entry, phase gate (bedroom | booting | desktop), styles
+├── shared/
+│   ├── constants/        all portfolio content (index.js, career.json)
+│   ├── utils/            assetUrl (base-path-aware assets), textHover (letter-weight hover), pdf (pdf.js worker)
+│   ├── hooks/useEscape   capture-phase Escape for overlays
+│   └── store/boot.js     intro phases
+├── bedroom/              the 3D room (the landing)
+│   ├── Bedroom.jsx       entry: the canvas plus the DOM overlays
+│   ├── components/       React components only
+│   │   ├── scene/        3D plumbing: Scene, CameraRig, Clickable
+│   │   ├── room/         static decor: Room, Furniture, Bed, Rug, Door
+│   │   ├── items/        3D objects you interact with: Laptop, Badges, Posters, Phone, ...
+│   │   ├── guide/        the robot guide: Guide, Robot
+│   │   └── ui/           DOM overlays: Loader, error boundary, TipBar, Pager,
+│   │                     cards/ (BadgeCard, ProjectCard, CvCard, ...), phone/, handheld/
+│   ├── hooks/            usePickable, usePickedCard, useTypewriter, useDragScroll, useLampSwitch
+│   ├── store/            useBedroomStore, selectors, laptopScreen
+│   ├── utils/            plain helpers, no React: motion, period, badges, pointer
+│   └── data/             static config: items (spots + camera views), mapPins, guideLines
+├── landing/              Quick view: the scrolling page
+│   ├── Landing.jsx       entry: the overlay and its close button
+│   ├── components/       sections/ (Hero, Journey, Skills, Projects), ui/ (SectionTitle)
+│   ├── hooks/            useScrollEffects (card reveal + backdrop colour)
+│   └── data/             backdrops (section → backdrop colour)
+└── macos/                the desktop simulation
+    ├── App.jsx · BootScreen.jsx
+    ├── components/       Dock, Navbar, LockScreen, ControlCenter, ...
+    ├── windows/          Terminal, Safari, Finder, Resume, Contact, ...
+    ├── hoc/              WindowWrapper (drag, focus, animate)
+    └── store/            window, ui, theme, network, location
 ```
 
-Import aliases are configured in `vite.config.js` and `jsconfig.json`: `#components`, `#constants`, `#store`, `#hoc`, `#windows`.
+Import aliases are configured in `vite.config.js` and `jsconfig.json`: `#constants` (→ `shared/constants`), `#shared`, `#bedroom`, `#landing`, `#macos`. Imports inside a folder stay relative; imports across folders use an alias.
 
 ---
 
@@ -108,7 +130,7 @@ This deploys to **two** targets, which need different base paths:
 base: process.env.VERCEL ? "/" : "/portfolio/"
 ```
 
-Because of that split, **never hardcode `/`-prefixed asset paths** — always run them through `assetUrl()` (`src/utils/assetUrl.js`), which prefixes `import.meta.env.BASE_URL` and leaves absolute URLs, `mailto:`, and `data:` alone. Hardcoding breaks the Pages build silently.
+Because of that split, **never hardcode `/`-prefixed asset paths** — always run them through `assetUrl()` (`src/shared/utils/assetUrl.js`), which prefixes `import.meta.env.BASE_URL` and leaves absolute URLs, `mailto:`, and `data:` alone. Hardcoding breaks the Pages build silently.
 
 Vercel redeploys itself on push. GitHub Pages does **not** — it only updates when you run:
 

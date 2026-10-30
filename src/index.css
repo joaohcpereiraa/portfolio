@@ -23,6 +23,7 @@ html.dark body {
   --font-georama: "Georama", sans-serif;
   --font-roboto: "Roboto Mono", monospace;
   --font-pixel: "Press Start 2P", monospace;
+  --font-terminal: "VT323", monospace;
   --breakpoint-3xl: 1920px;
 }
 
@@ -696,7 +697,7 @@ html.dark body {
   }
 }
 
-/* ─── Bedroom landing (src/components/bedroom) ───────────────────── */
+/* ─── Bedroom landing (src/bedroom) ─────────────────────────────── */
 #bedroom {
   @apply fixed inset-0 z-[100] bg-[#07060f] text-white select-none;
 
@@ -730,7 +731,7 @@ html.dark body {
 
   /* Bit's speech bubble: over its head, or docked bottom-left when it's out of view */
   .guide-bubble {
-    @apply relative flex max-w-64 -translate-x-1/2 -translate-y-full items-start gap-2 rounded-2xl rounded-bl-sm border border-cyan-200/30 bg-[#0c0a1c]/85 px-3.5 py-2.5 text-[13px] leading-snug text-white/90 shadow-xl backdrop-blur-md;
+    @apply relative flex max-w-72 -translate-x-1/2 -translate-y-full items-start gap-2 rounded-2xl rounded-bl-sm border border-cyan-200/30 bg-[#0c0a1c]/85 px-3.5 py-2.5 font-terminal text-[20px] leading-[1.15] tracking-wide text-cyan-50/90 shadow-xl backdrop-blur-md;
     width: max-content;
     animation: guide-bubble-in 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -773,8 +774,9 @@ html.dark body {
   }
 
   /* Loading screen */
+  /* Loading screen: text, a thin bar, the percentage */
   .bedroom-loader {
-    @apply fixed inset-0 z-30 col-center gap-5 bg-[#07060f] transition-opacity duration-700;
+    @apply fixed inset-0 z-30 col-center gap-4 bg-[#07060f] transition-opacity duration-700;
 
     p {
       @apply font-roboto text-xs uppercase tracking-[0.3em] text-white/60;
@@ -786,11 +788,15 @@ html.dark body {
   }
 
   .bedroom-loader-bar {
-    @apply h-1 w-52 overflow-hidden rounded-full bg-white/15;
+    @apply h-0.5 w-52 overflow-hidden rounded-full bg-white/10;
 
     span {
-      @apply block h-full rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-300 transition-[width] duration-300;
+      @apply block h-full rounded-full bg-white/80 transition-[width] duration-300;
     }
+  }
+
+  .bedroom-loader p.bedroom-loader-pct {
+    @apply text-[11px] tracking-[0.2em] text-white/40 tabular-nums;
   }
 
   /* iPhone overlay (phone on the bed): About me + socials */
@@ -1328,83 +1334,178 @@ html.dark body {
     }
   }
 
-  /* Timeline: the picked sticky note, unfolded in front of the board */
-  .note-card-wrap {
-    @apply fixed inset-0 z-20 flex-center pointer-events-none;
+  /* Experience: the picked-up ID badge, held up in front of you. It mirrors
+     the 3D badge (a stripe in the place's --accent, set inline, and the logo)
+     with just the role, its dates and what you did; it hangs from a lanyard
+     running up off screen and swings from the clip as it arrives. */
+  .badge-card-wrap {
+    @apply fixed inset-0 z-20 flex-center pointer-events-none pt-10;
   }
 
-  .note-card {
-    --note: #ffd166;
-    @apply pointer-events-auto relative w-[min(420px,88vw)] text-[#2a2340] select-text;
-    perspective: 1200px;
-    animation: note-card-arrive 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+  .badge-card {
+    --accent: #ffd166;
+    --ink: #1f1b33;
+    @apply pointer-events-auto relative flex w-[min(360px,88vw)] flex-col items-center rounded-[22px] pt-9 text-center select-text;
+    color: var(--ink);
+    background: #f8f7f3;
+    box-shadow:
+      0 30px 70px -20px rgb(0 0 0 / 0.75),
+      inset 0 0 0 1px rgb(0 0 0 / 0.06);
+    transform-origin: 50% -60px; /* the clip, where it hangs from */
+    will-change: transform, opacity;
+    /* Arrives as the 3D badge fades out (pick progress 0.7 → 1, ~0.56–0.8s). */
+    animation: badge-card-pickup 0.75s ease-in-out 0.5s both;
 
-    &.education {
-      --note: #7dd3fc;
-    }
-
-    h3 {
-      @apply mt-2 text-xl font-bold leading-snug;
-    }
-
-    /* Leaving a note (TimelineCard FOLD_MS = 620ms): the details fold back up,
-       then the note shrinks away before the 3D note returns to its pin. */
-    &.folding {
+    /* Leaving (BadgeCard LEAVE_MS = 380ms): it fades and drops a little while
+       the 3D badge fades back in on its way to the hook. */
+    &.leaving {
       @apply pointer-events-none;
-      animation: note-card-leave 0.3s cubic-bezier(0.55, 0, 0.75, 0.2) 0.32s both;
-    }
-
-    &.folding .note-card-fold {
-      animation: note-card-refold 0.32s cubic-bezier(0.55, 0, 0.75, 0.2) both;
+      animation: badge-card-drop 0.36s ease-in both;
     }
   }
 
-  .note-card-back {
-    @apply absolute -top-11 left-0 flex items-center gap-1.5 rounded-full border border-white/15 bg-[#0c0a1c]/80 px-3.5 py-1.5 text-xs text-white/80 backdrop-blur-md transition hover:text-white;
+  /* Two straps in a narrow V, from off the top of the screen to the clip. */
+  .badge-card-lanyard {
+    @apply absolute left-1/2 h-[60vh] w-14 -translate-x-1/2;
+    bottom: calc(100% + 8px);
+    background: var(--accent);
+    clip-path: polygon(38% 0, 62% 0, 100% 100%, 75% 100%, 50% 4%, 25% 100%, 0 100%);
+    filter: brightness(0.9);
   }
 
-  /* The note's face: what was written on it on the board. */
-  .note-card-face {
-    @apply relative rounded-t-sm px-6 pt-8 pb-5 shadow-2xl;
-    background: var(--note);
+  .badge-card-clip {
+    @apply absolute -top-3 left-1/2 h-6 w-10 -translate-x-1/2 rounded-md;
+    background: linear-gradient(#e4e4ea, #9a9aa6);
+    box-shadow: 0 2px 4px rgb(0 0 0 / 0.35);
   }
 
-  .note-card-pin {
-    @apply absolute top-2.5 left-1/2 size-3.5 -translate-x-1/2 rounded-full bg-[#e5484d] shadow;
+  .badge-card-slot {
+    @apply absolute top-3.5 left-1/2 h-2.5 w-16 -translate-x-1/2 rounded-full bg-[#c9c6bd];
   }
 
-  .note-card-meta {
-    @apply flex items-center gap-2 font-roboto text-xs text-[#2a2340]/65;
+  .badge-card-band {
+    @apply mt-1 block h-2.5 w-full;
+    background: var(--accent);
   }
 
-  .note-card-tag {
-    @apply rounded-full bg-[#2a2340]/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#2a2340];
+  .badge-card-logo {
+    @apply mx-5 mt-5 flex-center h-28 w-[calc(100%-40px)] rounded-xl bg-white px-7 py-5;
+    box-shadow: inset 0 0 0 1.5px #e2dfd6;
+
+    img {
+      @apply max-h-full max-w-full object-contain;
+    }
+
+    /* No logo for this place: its name stands in. */
+    strong {
+      @apply text-2xl font-extrabold uppercase tracking-tight;
+    }
   }
 
-  .note-card-year {
-    @apply mt-3 text-5xl font-bold leading-none;
-    font-family: Georgia, serif;
+  .badge-card h3 {
+    @apply mt-4 px-6 text-lg font-bold leading-snug;
   }
 
-  .note-card-place {
-    @apply mt-1 text-sm text-[#2a2340]/65;
+  /* The dates, set apart by size and weight alone between two hairlines:
+     start → end, the duration just under it. */
+  .badge-card-when {
+    @apply mx-5 mt-4 flex w-[calc(100%-40px)] items-center justify-center gap-4 border-y border-[#1f1b33]/10 px-4 pt-3 pb-2;
+
+    p {
+      @apply flex flex-col items-center;
+    }
+
+    span {
+      @apply font-roboto text-[10px] font-semibold uppercase tracking-[0.18em] text-[#1f1b33]/55;
+    }
+
+    strong {
+      @apply text-xl font-extrabold leading-tight whitespace-nowrap;
+    }
   }
 
-  /* The folded-under half that swings open with the details. */
-  .note-card-fold {
-    @apply rounded-b-sm border-t border-dashed border-[#2a2340]/25 px-6 pt-4 pb-5 text-[15px] leading-relaxed shadow-2xl;
-    background: linear-gradient(to bottom, rgb(0 0 0 / 0.07), transparent 22px), var(--note);
-    transform-origin: top center;
-    animation: note-card-unfold 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.55s both;
+  .badge-card-arrow {
+    @apply mt-3 shrink-0 text-[#1f1b33]/45;
   }
 
-  .note-card-nav {
+  .badge-card-duration {
+    @apply mt-2.5 font-roboto text-xs font-semibold uppercase tracking-wider text-[#1f1b33]/60;
+  }
+
+  .badge-card-desc {
+    @apply mx-6 mt-4 text-sm leading-relaxed text-[#1f1b33]/75;
+  }
+
+  .badge-card-footer {
+    @apply mt-4 flex w-full items-center justify-between rounded-b-[22px] border-t border-[#1f1b33]/10 px-3 py-2.5;
+  }
+
+  .badge-card-back {
+    @apply flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition hover:bg-[#1f1b33]/10;
+  }
+
+  .badge-card-nav {
     /* bg/padding/blur reset: the desktop menu bar's global nav style leaks in */
-    @apply mt-5 flex items-center justify-between bg-transparent p-0 font-roboto text-xs text-[#2a2340]/60 backdrop-blur-none;
+    @apply flex items-center gap-1 bg-transparent p-0 font-roboto text-xs text-[#1f1b33]/60 backdrop-blur-none;
 
     button {
-      @apply flex items-center gap-0.5 rounded-md px-2 py-1 font-semibold text-[#2a2340] transition hover:bg-[#2a2340]/10 disabled:opacity-30 disabled:hover:bg-transparent;
+      @apply rounded-md p-1 text-[#1f1b33] transition hover:bg-[#1f1b33]/10 disabled:opacity-30 disabled:hover:bg-transparent;
     }
+  }
+
+  /* Experience as a list ("View as list"): a small glass panel at the side of
+     the room, like the room's other floating UI, so the room stays in view. */
+  .xp {
+    @apply fixed inset-y-0 right-6 z-30 my-auto flex h-fit max-h-[76vh] w-[min(480px,calc(100vw-24px))] flex-col overflow-y-auto rounded-2xl border border-white/15 bg-[#0c0a1c]/75 text-[#e8e4ff] shadow-2xl backdrop-blur-md max-sm:top-auto max-sm:right-3 max-sm:bottom-24 max-sm:my-0;
+    animation: xp-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .xp-head {
+    @apply flex items-center justify-between border-b border-white/10 py-2.5 pr-2.5 pl-5;
+
+    h2 {
+      @apply font-roboto text-[11px] font-semibold uppercase tracking-[0.3em] text-[#e8e4ff]/70;
+    }
+  }
+
+  .xp-close {
+    @apply flex-center size-7 rounded-full text-[#e8e4ff]/55 transition hover:bg-white/10 hover:text-white;
+  }
+
+  /* A plain table: Role · Place · Dates, one row per role. Rows highlight on
+     hover and pick that badge when clicked. */
+  .xp-table {
+    @apply w-full border-collapse text-left text-[13px];
+
+    th {
+      @apply px-3 pt-3 pb-2 font-roboto text-[10px] font-semibold uppercase tracking-[0.2em] text-[#e8e4ff]/45;
+    }
+
+    td {
+      @apply border-t border-white/8 px-3 py-2.5 align-top leading-snug text-[#e8e4ff]/85;
+    }
+
+    th:first-child,
+    td:first-child {
+      @apply pl-5;
+    }
+
+    th:last-child,
+    td:last-child {
+      @apply pr-5 text-right;
+    }
+
+    tbody tr {
+      @apply cursor-pointer outline-none transition-colors hover:bg-white/8 focus-visible:bg-white/8;
+    }
+
+    td:first-child {
+      @apply font-semibold text-white;
+    }
+  }
+
+  .xp-dates {
+    @apply whitespace-nowrap font-roboto text-xs;
   }
 
   .bedroom-error {
@@ -1431,175 +1532,6 @@ html.dark body {
   .bedroom-quick {
     @apply fixed top-5 left-5 z-[35] flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs text-white/70 backdrop-blur-md transition hover:bg-white/10 hover:text-white;
   }
-
-  /* Ruled index card under lamp light: cool paper, indigo ink, a pink margin
-     line. One line of text per 28px rule; section names live in the margin. */
-  .quickview-wrap {
-    @apply fixed inset-0 z-[60] flex justify-center overflow-y-auto px-4 py-12 backdrop-blur-sm max-sm:px-3 max-sm:py-4;
-    background: rgb(7 6 15 / 0.72);
-    animation: quickview-fade 0.25s ease-out;
-  }
-
-  .quickview {
-    --rule: 28px;
-    --margin: 128px;
-    --ink: #231d5c;
-    --ink-soft: #5d5a8c;
-    --paper: #eceef8;
-    --ruling: #cdd3ee;
-    --margin-line: #e48aa3;
-
-    @apply relative h-fit w-full max-w-[680px] rounded-[3px] select-text;
-    padding: calc(var(--rule) * 2) 48px calc(var(--rule) * 2) calc(var(--margin) + 24px);
-    font-family: "Bricolage Grotesque", sans-serif;
-    font-size: 15px;
-    line-height: var(--rule);
-    color: var(--ink);
-    background:
-      linear-gradient(90deg, transparent calc(var(--margin) - 1px), var(--margin-line) calc(var(--margin) - 1px), var(--margin-line) var(--margin), transparent var(--margin)),
-      repeating-linear-gradient(transparent 0 calc(var(--rule) - 1px), var(--ruling) calc(var(--rule) - 1px) var(--rule)),
-      var(--paper);
-    background-position: 0 0, 0 calc(var(--rule) * 2 + 6px), 0 0;
-    box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.7);
-    animation: quickview-in 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-
-    a {
-      @apply underline decoration-1 underline-offset-[5px] transition-colors;
-      text-decoration-color: color-mix(in srgb, var(--ink) 35%, transparent);
-
-      &:hover {
-        text-decoration-color: var(--ink);
-      }
-    }
-
-    :focus-visible {
-      outline: 2px solid var(--margin-line);
-      outline-offset: 2px;
-    }
-
-    @media (max-width: 640px) {
-      --margin: 20px;
-      padding: var(--rule) 20px var(--rule) calc(var(--margin) + 16px);
-      background-position: 0 0, 0 calc(var(--rule) + 6px), 0 0;
-    }
-  }
-
-  .quickview-close {
-    @apply flex-center absolute top-3 right-3 size-9 rounded-full transition-colors;
-    color: var(--ink-soft);
-
-    &:hover {
-      color: var(--ink);
-      background: rgb(35 29 92 / 0.08);
-    }
-  }
-
-  .quickview-head {
-    @apply flex items-start justify-between gap-6;
-
-    h2 {
-      font-size: 44px;
-      line-height: calc(var(--rule) * 2);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      font-variation-settings: "wdth" 85;
-    }
-
-    p {
-      color: var(--ink-soft);
-    }
-
-    /* Clipped on like a photo on a form. */
-    img {
-      @apply shrink-0 object-cover;
-      width: 66px;
-      height: calc(var(--rule) * 3);
-      margin-right: 8px;
-      transform: rotate(2.5deg);
-      border: 4px solid #fff;
-      box-shadow: 0 6px 14px -6px rgb(35 29 92 / 0.45);
-    }
-
-    @media (max-width: 640px) {
-      h2 {
-        font-size: 32px;
-      }
-
-      img {
-        width: 56px;
-        height: calc(var(--rule) * 2.5);
-      }
-    }
-  }
-
-  .quickview-bio {
-    @apply max-w-[52ch];
-    margin-top: calc(var(--rule) / 2);
-  }
-
-  .quickview-actions {
-    @apply flex flex-wrap items-center gap-x-5;
-    margin-top: var(--rule);
-    height: auto;
-  }
-
-  .quickview .quickview-cv {
-    @apply flex items-center gap-2 rounded-full px-4 no-underline;
-    line-height: calc(var(--rule) - 2px);
-    margin-right: 4px;
-    background: var(--ink);
-    color: var(--paper);
-    font-weight: 600;
-
-    &:hover {
-      background: #352c86;
-    }
-  }
-
-  .quickview-row {
-    @apply relative;
-    margin-top: var(--rule);
-
-    /* Section name written in the margin, left of the pink line. */
-    h3 {
-      @apply absolute text-right;
-      left: calc(-1 * var(--margin) - 24px);
-      width: calc(var(--margin) - 16px);
-      font-weight: 600;
-      color: var(--margin-line);
-      filter: saturate(1.3) brightness(0.85);
-    }
-
-    li {
-      @apply max-w-[60ch];
-    }
-
-    strong {
-      font-weight: 600;
-    }
-
-    a {
-      font-weight: 600;
-    }
-
-    em {
-      @apply not-italic;
-      color: var(--ink-soft);
-      margin-right: 6px;
-    }
-
-    time {
-      @apply block text-sm;
-      color: var(--ink-soft);
-    }
-
-    @media (max-width: 640px) {
-      h3 {
-        @apply static text-left;
-        width: auto;
-      }
-    }
-  }
 }
 
 /* Keyframes must live at the top level — nesting them inside #bedroom makes
@@ -1609,25 +1541,25 @@ html.dark body {
   50% { opacity: 1; }
 }
 
-@keyframes note-card-arrive {
-  from { opacity: 0; transform: scale(0.4) rotate(-5deg); }
-  to { opacity: 1; transform: scale(1) rotate(-1deg); }
+/* Picked up: fades in over the arriving 3D badge with a soft swing on its
+   lanyard that settles in one and a half sways. */
+/* The list panel slides in from the room's right edge. */
+@keyframes xp-in {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: none; }
 }
 
-@keyframes note-card-refold {
-  from { opacity: 1; transform: rotateX(0deg); }
-  to { opacity: 0.3; transform: rotateX(-100deg); }
+@keyframes badge-card-pickup {
+  0% { opacity: 0; transform: translateY(14px) scale(0.97) rotate(-2.5deg); }
+  35% { opacity: 1; }
+  55% { transform: translateY(0) scale(1) rotate(1.2deg); }
+  78% { transform: rotate(-0.4deg); }
+  100% { opacity: 1; transform: rotate(0deg); }
 }
 
-@keyframes note-card-leave {
-  from { opacity: 1; transform: scale(1) rotate(-1deg); }
-  to { opacity: 0; transform: scale(0.4) rotate(-5deg); }
-}
-
-@keyframes note-card-unfold {
-  from { opacity: 0.3; transform: rotateX(-100deg); }
-  50% { opacity: 1; }
-  to { opacity: 1; transform: rotateX(0deg); }
+@keyframes badge-card-drop {
+  from { opacity: 1; transform: translateY(0) rotate(0deg); }
+  to { opacity: 0; transform: translateY(18px) scale(0.97) rotate(1.5deg); }
 }
 
 @keyframes iphone-in {
@@ -1681,22 +1613,10 @@ html.dark body {
   to { opacity: 1; transform: none; }
 }
 
-@keyframes quickview-fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes quickview-in {
-  from { opacity: 0; transform: translateY(16px) scale(0.98); }
-  to { opacity: 1; transform: none; }
-}
-
 @media (prefers-reduced-motion: reduce) {
   #bedroom .bedroom-hint,
   #bedroom .iphone,
   #bedroom .iphone-bubble,
-  #bedroom .quickview-wrap,
-  #bedroom .quickview,
   #bedroom .handheld,
   #bedroom .project-card,
   #bedroom .cv-card,
@@ -1705,10 +1625,448 @@ html.dark body {
   #bedroom .hh-screen,
   #bedroom .hh-slot.selected::before,
   #bedroom .hh-caret,
-  #bedroom .note-card,
-  #bedroom .note-card-fold {
+  #bedroom .badge-card,
+  #bedroom .xp {
     animation: none;
   }
+}
+
+/* ─── Quick view: the old landing page as a scrolling overlay ─────────── */
+#landing {
+  @apply fixed inset-0 z-[100] text-white select-none;
+  background-color: #06070d; /* scroll-driven; tweened per section in landing/hooks/useScrollEffects.js */
+
+  .landing-scroller {
+    @apply relative z-10 h-dvh w-dvw overflow-y-auto overflow-x-hidden;
+  }
+
+  /* Tiling, slowly drifting starfield (the dotted pattern). */
+  .landing-stars {
+    @apply fixed inset-0 z-0 pointer-events-none;
+    background-image:
+      radial-gradient(1.5px 1.5px at 40px 60px, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 120px 30px, #fff, transparent),
+      radial-gradient(1px 1px at 80px 140px, rgba(255, 255, 255, 0.85), transparent),
+      radial-gradient(1px 1px at 160px 100px, rgba(255, 255, 255, 0.7), transparent),
+      radial-gradient(1.5px 1.5px at 30px 170px, #fff, transparent),
+      radial-gradient(1px 1px at 190px 50px, rgba(255, 255, 255, 0.6), transparent),
+      radial-gradient(1px 1px at 100px 190px, rgba(255, 255, 255, 0.7), transparent),
+      radial-gradient(1.5px 1.5px at 10px 110px, #fff, transparent);
+    background-size: 200px 200px;
+    background-repeat: repeat;
+    opacity: 0.4;
+    animation: stars-drift 90s linear infinite;
+  }
+
+  /* Technical HUD corner frame accents. */
+  .landing-frame {
+    @apply fixed w-8 h-8 lg:w-12 lg:h-12 z-[35] pointer-events-none border-white/25;
+  }
+  .landing-frame.tl { @apply top-4 left-4 border-t-2 border-l-2; }
+  .landing-frame.tr { @apply top-4 right-4 border-t-2 border-r-2; }
+  .landing-frame.bl { @apply bottom-4 left-4 border-b-2 border-l-2; }
+  .landing-frame.br { @apply bottom-4 right-4 border-b-2 border-r-2; }
+
+  /* Decorative ∞ rule above section titles. */
+  .landing-rule {
+    @apply flex items-center justify-center gap-3 mb-5;
+
+    .line { @apply h-px w-16 bg-white/25; }
+    .mark { @apply font-roboto text-xs text-white/50; }
+  }
+
+  /* Generic full-viewport info section (hero / skills / projects). */
+  .landing-section {
+    @apply relative w-full min-h-dvh flex-center py-24 px-6;
+  }
+
+  .landing-section-inner {
+    @apply w-full max-w-5xl mx-auto;
+  }
+
+  /* Hairline separators give a small, clear break between sections. */
+  .landing-journey,
+  .landing-skills,
+  .landing-projects {
+    @apply border-t border-white/8;
+  }
+
+  .landing-section-head {
+    @apply mb-12 text-center;
+  }
+
+  .landing-eyebrow {
+    @apply font-roboto text-[10px] uppercase tracking-[0.35em] text-blue-300/70;
+  }
+
+  .landing-section-title {
+    @apply mt-3 font-roboto font-bold uppercase text-3xl md:text-5xl tracking-[0.15em] text-white;
+  }
+
+  /* Skills — tech logos orbiting the section title. */
+  .skills-orbit {
+    --orbit-size: min(84vw, 34rem);
+    @apply relative mx-auto flex-center;
+    width: var(--orbit-size);
+    height: var(--orbit-size);
+  }
+
+  .orbit-guide {
+    @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/10 pointer-events-none;
+
+    &.outer {
+      width: calc(var(--orbit-size) * 0.92);
+      height: calc(var(--orbit-size) * 0.92);
+    }
+
+    &.inner {
+      width: calc(var(--orbit-size) * 0.54);
+      height: calc(var(--orbit-size) * 0.54);
+    }
+  }
+
+  /* The ring spins while each icon counter-spins at the same speed so the
+     logos stay upright. The ring layer overlaps the whole orbit, so it must
+     not catch the pointer — only the icons themselves do. */
+  .orbit-ring {
+    --radius: calc(var(--orbit-size) * 0.46);
+    @apply absolute inset-0 pointer-events-none;
+    animation: orbit-spin 70s linear infinite;
+
+    .orbit-icon {
+      animation: orbit-spin-rev 70s linear infinite;
+    }
+  }
+
+  .orbit-item {
+    @apply absolute left-1/2 top-1/2;
+    transform: translate(-50%, -50%) rotate(var(--angle))
+      translateY(calc(var(--radius) * -1)) rotate(calc(var(--angle) * -1));
+    /* Opacity-only pop-in (transform would clobber the placement above). */
+    animation: orbit-item-in 0.4s ease both;
+    animation-delay: calc(var(--i) * 60ms);
+  }
+
+  .orbit-icon {
+    @apply flex-center size-12 rounded-full bg-white/8 border border-white/15 backdrop-blur-sm cursor-pointer pointer-events-auto;
+    transition: scale 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+      scale: 1.25;
+      @apply border-white/40;
+    }
+
+    img {
+      @apply size-6 object-contain pointer-events-none;
+    }
+  }
+
+  /* Freeze the whole orbit while inspecting a logo. */
+  .skills-orbit:hover :is(.orbit-ring, .orbit-icon) {
+    animation-play-state: paused;
+  }
+
+  .orbit-center {
+    @apply relative z-10 w-72 col-center text-center pointer-events-none;
+
+    .landing-section-title {
+      @apply text-2xl md:text-3xl;
+    }
+  }
+
+  .orbit-hint {
+    @apply mt-3 text-[11px] text-gray-500;
+  }
+
+  /* Stack switcher below the orbit. */
+  .orbit-tabs {
+    @apply mt-8 flex flex-wrap items-center justify-center gap-2;
+  }
+
+  .orbit-tab {
+    @apply rounded-full px-4 py-1.5 text-xs font-semibold text-gray-300 bg-white/5 border border-white/15 cursor-pointer transition-colors hover:bg-white/10 hover:text-white;
+
+    &.active {
+      @apply bg-blue-400/15 border-blue-300/40 text-blue-100;
+    }
+  }
+
+  /* Detail card swapped into the middle while a logo is hovered. */
+  .orbit-detail {
+    @apply w-full col-center gap-1 rounded-2xl px-5 py-5 border border-white/10 bg-white/5 backdrop-blur-sm;
+    animation: orbit-detail-in 0.25s ease both;
+
+    img {
+      @apply size-9 object-contain mb-1.5;
+    }
+
+    h3 {
+      @apply text-base font-semibold text-white;
+    }
+
+    .orbit-detail-tag {
+      @apply font-roboto text-[10px] uppercase tracking-[0.25em] text-blue-300/70;
+    }
+
+    .orbit-detail-blurb {
+      @apply mt-1.5 text-xs text-gray-300 leading-relaxed;
+    }
+
+    .orbit-detail-used {
+      @apply mt-2 pt-2 border-t border-white/10 text-xs text-gray-400 leading-relaxed;
+    }
+  }
+
+  /* Journey — alternating career timeline around a central line. */
+  .timeline {
+    @apply relative max-w-4xl mx-auto;
+
+    &::before {
+      content: "";
+      @apply absolute top-0 bottom-0 w-px bg-white/15 left-4 md:left-1/2 md:-translate-x-1/2;
+    }
+  }
+
+  .timeline-entry {
+    @apply relative mb-10 last:mb-0 pl-12 md:pl-0 md:w-[calc(50%-2.5rem)];
+
+    .timeline-dot {
+      @apply absolute top-7 z-10 w-3 h-3 rounded-full bg-blue-300 left-4 -translate-x-1/2;
+      box-shadow: 0 0 14px rgba(147, 197, 253, 0.55);
+    }
+
+    /* Alternate sides on md+: odd cards left of the line, even cards right. */
+    &:nth-child(odd) .timeline-dot {
+      @apply md:left-auto md:-right-10 md:translate-x-1/2;
+    }
+
+    &:nth-child(even) {
+      @apply md:ml-auto;
+
+      .timeline-dot {
+        @apply md:-left-10 md:-translate-x-1/2;
+      }
+    }
+  }
+
+  .timeline-card {
+    @apply rounded-2xl p-5 border border-white/10 bg-white/5 backdrop-blur-sm transition-colors hover:bg-white/8 hover:border-white/20;
+
+    h3 {
+      @apply mt-2 text-base font-semibold text-white;
+    }
+
+    .timeline-meta {
+      @apply flex items-center justify-between gap-3;
+    }
+
+    .timeline-period {
+      @apply font-roboto text-[10px] uppercase tracking-[0.2em] text-blue-300/70;
+    }
+
+    .timeline-tag {
+      @apply text-[10px] rounded-full px-2 py-0.5 border;
+
+      &.work {
+        @apply bg-blue-400/10 text-blue-200 border-blue-300/25;
+      }
+
+      &.education {
+        @apply bg-purple-400/10 text-purple-200 border-purple-300/25;
+      }
+    }
+
+    .timeline-place {
+      @apply mt-0.5 text-xs text-gray-500;
+    }
+
+    .timeline-desc {
+      @apply mt-3 text-sm text-gray-400 leading-relaxed;
+    }
+  }
+
+  /* Projects — featured rows, screenshot/text alternating sides */
+  .projects-list {
+    @apply flex flex-col gap-14 md:gap-20;
+  }
+
+  .project-feature {
+    @apply grid items-center gap-8 md:grid-cols-2 md:gap-14;
+
+    /* Alternate sides: even rows show the visual on the right. */
+    &.flip .project-frame {
+      @apply md:order-last;
+    }
+  }
+
+  /* mac-style window chrome around the project visual. */
+  .project-frame {
+    @apply rounded-xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm shadow-2xl shadow-black/40 transition-colors hover:border-white/25;
+  }
+
+  .project-frame-bar {
+    @apply flex items-center gap-1.5 px-3.5 py-2.5 bg-white/8 border-b border-white/10;
+
+    span {
+      @apply size-2.5 rounded-full;
+
+      &:nth-child(1) {
+        background: #ff5f57;
+      }
+      &:nth-child(2) {
+        background: #febc2e;
+      }
+      &:nth-child(3) {
+        background: #28c840;
+      }
+    }
+
+    p {
+      @apply mx-auto -translate-x-4 text-[11px] tracking-wide text-gray-400;
+    }
+  }
+
+  .project-shot {
+    @apply w-full aspect-[16/10] object-cover object-top;
+  }
+
+  /* Fallback cover for projects without a screenshot. */
+  .project-cover {
+    @apply relative w-full aspect-[16/10] flex-center overflow-hidden;
+
+    &::before {
+      content: "";
+      @apply absolute inset-0;
+      background:
+        radial-gradient(
+          circle at 30% 20%,
+          rgb(255 255 255 / 0.25),
+          transparent 55%
+        ),
+        radial-gradient(circle at 80% 90%, rgb(0 0 0 / 0.35), transparent 60%);
+    }
+
+    .project-cover-initial {
+      @apply relative font-georama italic font-black text-white/25;
+      font-size: clamp(6rem, 12vw, 9rem);
+      line-height: 1;
+    }
+
+    .project-cover-icons {
+      @apply absolute bottom-4 right-4 flex gap-2;
+
+      img {
+        @apply size-6 opacity-70 drop-shadow;
+      }
+    }
+  }
+
+  .project-info {
+    .project-tagline {
+      @apply text-xs uppercase tracking-[0.2em] text-blue-300/70;
+    }
+
+    h3 {
+      @apply mt-2 text-2xl md:text-3xl font-semibold text-white;
+    }
+
+    .project-desc {
+      @apply mt-4 text-sm md:text-base text-gray-400 leading-relaxed;
+    }
+
+    .project-stack {
+      @apply mt-5 flex flex-wrap gap-2;
+
+      li {
+        @apply flex items-center gap-1.5 text-xs rounded-full px-2.5 py-1 bg-white/8 text-gray-300 border border-white/10;
+
+        img {
+          @apply size-3.5 object-contain;
+        }
+      }
+    }
+
+    .project-link {
+      @apply mt-6 inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold bg-blue-500/15 border border-blue-300/30 text-blue-200 transition-colors hover:bg-blue-500/25 hover:text-white;
+    }
+  }
+
+  .hero-inner {
+    @apply relative z-20 col-center text-center px-6 max-w-3xl;
+  }
+
+  .hero-greeting {
+    @apply text-2xl font-georama font-light text-gray-300;
+  }
+
+  .hero-name {
+    @apply mt-2 leading-none text-white;
+  }
+
+  .hero-role {
+    @apply mt-4 text-xl font-roboto tracking-wide text-gray-200;
+  }
+
+  .hero-bio {
+    @apply mt-5 max-w-xl text-base text-gray-400 leading-relaxed;
+  }
+
+  /* Action row: quiet icon socials, then the two labeled CTAs. */
+  .hero-actions {
+    @apply mt-8 flex flex-wrap items-center justify-center gap-3 pointer-events-auto;
+  }
+
+  .hero-social {
+    @apply flex-center size-11 rounded-full border border-white/10 transition-transform hover:-translate-y-0.5 hover:scale-105;
+
+    img {
+      @apply size-5 object-contain;
+    }
+  }
+
+  .hero-actions-divider {
+    @apply hidden sm:block w-px h-6 bg-white/15;
+  }
+
+  /* Primary CTA: solid accent — the resume is the main recruiter action. */
+  .hero-resume {
+    @apply flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-white bg-blue-600 shadow-lg shadow-blue-500/25 transition hover:bg-blue-500 hover:-translate-y-0.5;
+  }
+
+  .hero-scroll-cue {
+    @apply mt-12 col-center gap-1 text-xs uppercase tracking-widest text-gray-400;
+  }
+
+
+  .landing-close {
+    @apply fixed top-6 right-6 z-[40] flex-center size-10 rounded-full border border-white/15 bg-white/5 text-white/70 backdrop-blur-md transition hover:bg-white/10 hover:text-white lg:top-8 lg:right-8;
+  }
+}
+
+/* Keyframes must live at the top level — nesting them inside #landing makes
+   the production minifier (Lightning CSS) drop the parent rule's declarations. */
+@keyframes stars-drift {
+  from { background-position: 0 0; }
+  to { background-position: 200px 400px; }
+}
+
+@keyframes orbit-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orbit-spin-rev {
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes orbit-detail-in {
+  from { opacity: 0; transform: translateY(6px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Opacity only — the item's transform carries its position on the ring. */
+@keyframes orbit-item-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* ─── macOS boot screen ───────────────────────────────────────────── */
