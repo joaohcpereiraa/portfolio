@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- The room's window at night, in flat colours: a dusk-blue pane split by
+       the frame, and the moon. -->
+  <rect width="64" height="64" rx="14" fill="#15122a"/>
+  <rect x="12" y="12" width="40" height="40" rx="4" fill="#433d7a"/>
+  <path d="M32 12v40" stroke="#15122a" stroke-width="3"/>
+  <circle cx="43" cy="24" r="6" fill="#f3eccd"/>
+</svg>
