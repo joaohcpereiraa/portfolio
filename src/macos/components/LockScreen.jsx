@@ -3,7 +3,7 @@ import gsap from "gsap";
 import dayjs from "dayjs";
 import { profile } from "#constants";
 import useUiStore from "../store/ui";
-import { assetUrl } from "../utils/assetUrl";
+import { assetUrl } from "#shared/utils/assetUrl";
 
 const LockScreen = () => {
   const unlock = useUiStore((s) => s.unlock);

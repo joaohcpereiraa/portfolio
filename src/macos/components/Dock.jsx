@@ -1,10 +1,10 @@
 import { useRef } from "react";
-import { dockApps } from "../constants";
+import { dockApps } from "#constants";
 import { Tooltip } from "react-tooltip";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import useWindowStore from "#store/window";
-import { assetUrl } from "../utils/assetUrl";
+import useWindowStore from "../store/window";
+import { assetUrl } from "#shared/utils/assetUrl";
 
 
 const Dock = () => {

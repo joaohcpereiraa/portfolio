@@ -1,7 +1,7 @@
 import WindowControlls from "../components/WindowControlls";
-import { socials } from "../constants";
+import { socials } from "#constants";
 import WindowWrapper from "../hoc/WindowWrapper";
-import { assetUrl } from "../utils/assetUrl";
+import { assetUrl } from "#shared/utils/assetUrl";
 
 const Contact = () => {
   return (

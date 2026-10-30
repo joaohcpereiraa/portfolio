@@ -1,7 +1,7 @@
 import gsap from "gsap";
 
 // Renders a string as individual <span> letters so their font weight can be
-// animated per-letter on hover. Mirrors the effect used in Welcome.jsx.
+// animated per-letter on hover (the macOS welcome and the landing hero).
 export const renderText = (text, className, baseWeight = 400) =>
   [...text].map((char, i) => (
     <span

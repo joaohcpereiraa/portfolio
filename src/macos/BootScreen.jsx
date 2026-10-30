@@ -1,8 +1,8 @@
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import useBootStore from "../store/boot";
-import { assetUrl } from "../utils/assetUrl";
+import useBootStore from "#shared/store/boot";
+import { assetUrl } from "#shared/utils/assetUrl";
 
 const BOOT_DURATION = 2.6; // seconds, fixed timed fill
 

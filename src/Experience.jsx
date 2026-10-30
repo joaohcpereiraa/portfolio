@@ -1,7 +1,7 @@
-import App from "./App";
-import useBootStore from "./store/boot";
-import Bedroom from "./components/bedroom/Bedroom";
-import BootScreen from "./components/BootScreen";
+import App from "./macos/App";
+import useBootStore from "./shared/store/boot";
+import Bedroom from "./bedroom/Bedroom";
+import BootScreen from "./macos/BootScreen";
 
 const Experience = () => {
   const phase = useBootStore((s) => s.phase);

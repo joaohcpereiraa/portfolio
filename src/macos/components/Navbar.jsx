@@ -1,10 +1,10 @@
 import { navLinks } from "#constants";
 import { navIcons } from "#constants";
 import { locations } from "#constants";
-import useWindowStore from "#store/window";
+import useWindowStore from "../store/window";
 import { useState, useRef } from "react";
 import dayjs from "dayjs";
-import { assetUrl } from "../utils/assetUrl";
+import { assetUrl } from "#shared/utils/assetUrl";
 import ControlCenter from "./ControlCenter";
 
 

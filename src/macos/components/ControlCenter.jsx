@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import useThemeStore from "../store/theme";
 import useNetworkStore from "../store/network";
-import useBootStore from "../store/boot";
+import useBootStore from "#shared/store/boot";
 import useUiStore from "../store/ui";
 
 const ControlCenter = ({ onClose, triggerRef }) => {
@@ -50,14 +50,7 @@ const ControlCenter = ({ onClose, triggerRef }) => {
     border: isDark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(255,255,255,0.7)",
     boxShadow: isDark ? "0 2px 8px rgba(0,0,0,0.3)" : "0 2px 8px rgba(0,0,0,0.12)",
   };
-  const btnStyle = {
-    background: isDark ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.55)",
-    backdropFilter: "blur(20px) saturate(180%)",
-    WebkitBackdropFilter: "blur(20px) saturate(180%)",
-    border: isDark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(255,255,255,0.7)",
-    boxShadow: isDark ? "0 2px 8px rgba(0,0,0,0.3)" : "0 2px 8px rgba(0,0,0,0.12)",
-    color: isDark ? "#f5f5f7" : "#0a0a0a",
-  };
+  const btnStyle = { ...tileStyle, color: isDark ? "#f5f5f7" : "#0a0a0a" };
 
   return (
     <div id="control-center" ref={panelRef}>

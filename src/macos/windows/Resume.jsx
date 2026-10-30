@@ -1,23 +1,20 @@
 import { Download } from "lucide-react";
 import { useState } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
+import { Document, Page } from "react-pdf";
+import "#shared/utils/pdf";
 import WindowControlls from "../components/WindowControlls";
 import WindowWrapper from "../hoc/WindowWrapper";
 import useWindowStore from "../store/window";
-import { assetUrl } from "../utils/assetUrl";
+import { cvUrl } from "#constants";
 
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-    "pdfjs-dist/build/pdf.worker.min.mjs",
-    import.meta.url
-).toString();
 
 const Resume = () => {
   const [numPages, setNumPages] = useState(0);
   const resumeData = useWindowStore((state) => state.windows.resume.data);
 
-  const pdfFile = resumeData?.file || assetUrl("/files/resumee.pdf");
+  const pdfFile = resumeData?.file || cvUrl;
   const pdfTitle = resumeData?.title || "Resume.pdf";
 
   const handleLoadSuccess = ({ numPages: loadedPages }) => {

@@ -1,11 +1,10 @@
 import { Search } from "lucide-react";
 import WindowControlls from "../components/WindowControlls";
 import WindowWrapper from "../hoc/WindowWrapper";
-import { locations } from "../constants";
+import { locations, cvUrl } from "#constants";
 import useLocationStore from "../store/location";
 import clsx from "clsx";
 import useWindowStore from "../store/window";
-import { assetUrl } from "../utils/assetUrl";
 
 const Finder = () => {
   const { activeLocation, setActiveLocation } = useLocationStore();
@@ -27,7 +26,7 @@ const Finder = () => {
 
   const openItem = (item) => {
     if (item.fileType === "pdf") {
-      const file = item.href || assetUrl("/files/resumee.pdf");
+      const file = item.href || cvUrl;
       return openWindow("resume", { file, title: item.name });
     }
     if (item.kind === "folder") return setActiveLocation(item);

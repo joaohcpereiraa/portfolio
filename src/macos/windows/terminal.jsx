@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import WindowWrapper from "#hoc/WindowWrapper";
+import WindowWrapper from "../hoc/WindowWrapper";
 import useWindowStore from "../store/window";
 import WindowControlls from "../components/WindowControlls";
 import {
@@ -8,7 +8,7 @@ import {
   profile,
   socials,
   techStack,
-} from "../constants";
+} from "#constants";
 
 const PROMPT = "joao@macbook ~ %";
 const EMAIL = "joao.costa.20@hotmail.com";
@@ -87,7 +87,7 @@ const INFO = [
   "────────────",
   `Name:    ${profile.name}`,
   `Role:    ${profile.role}`,
-  "Study:   MSc Cybersecurity & SysAdmin",
+  "Study:   BSc Informatics Engineering",
   "Shell:   zsh (simulated)",
   "Stack:   React · Node.js · .NET · AWS",
   `Contact: ${EMAIL}`,
