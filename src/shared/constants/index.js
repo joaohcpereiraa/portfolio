@@ -310,11 +310,11 @@ const aboutCard = {
   rows: [
     { label: "email", value: "joao.costa.20@hotmail.com", href: "mailto:joao.costa.20@hotmail.com" },
     { label: "based in", value: "Porto, Portugal" },
-    { label: "currently", value: "MSc in Cybersecurity & System Administration, ISEP" },
+    { label: "currently", value: "Open to work" },
     { label: "studied", value: "BSc in Informatics Engineering, ISEP" },
   ],
   summary:
-    "I'm a full-stack developer from Porto. After graduating in Informatics Engineering at ISEP, I spent the last year at Its Possible Tech building products end-to-end with React, Next.js, Node.js and TypeScript, from AWS serverless infrastructure to payments and AI features. Now I'm taking an MSc in Cybersecurity & System Administration to go deeper into security and systems.",
+    "I'm a full-stack developer from Porto. After graduating in Informatics Engineering at ISEP, I spent a year and a half at Its Possible Tech (Feb 2025 to Jul 2026) building products end-to-end with React, Next.js, Node.js and TypeScript, from AWS serverless infrastructure to payments and AI features. Now I'm looking for my next role.",
 };
 
 // `image` is a real screenshot; projects without one render a styled cover
@@ -378,6 +378,17 @@ const landingProjects = [
 // Timeline vem de career.json (gerado pelo career-hub).
 const careerTimeline = careerData.timeline;
 
+// The CV PDF: the room's papers, the landing hero and the desktop's Resume window.
+const cvUrl = assetUrl("/files/resumee.pdf");
+
+// Logo shown on each place's ID badge, keyed by the place's short name (the
+// part of `place` before " — ").
+const placeLogos = {
+  ISEP: assetUrl("/images/logos/isep.png"),
+  "INESC TEC": assetUrl("/images/logos/inesctec.svg"),
+  "Its Possible Tech": assetUrl("/images/logos/itspossible.png"),
+};
+
 const photosLinks = [
   {
     id: 1,
@@ -439,6 +450,8 @@ export {
   aboutCard,
   mappedLandingProjects as landingProjects,
   careerTimeline,
+  placeLogos,
+  cvUrl,
   mappedNavIcons as navIcons,
   dockApps,
   mappedBlogPosts as blogPosts,
@@ -617,7 +630,7 @@ const ABOUT_LOCATION = {
       image: "/images/joao.png",
       description: [
         "I'm a junior full-stack developer who graduated from the Instituto Superior de Engenharia do Porto (ISEP) with a degree in Computer Engineering.",
-        "Over the past year, I've been working at a tech company where I've strengthened my skills in JavaScript, especially TypeScript, and frameworks like Next.js while building modern web applications.",
+        "I then spent a year and a half at a tech company, where I strengthened my skills in JavaScript, especially TypeScript, and frameworks like Next.js while building modern web applications.",
         "I'm particularly passionate about backend development, but recently I've been exploring more frontend work, focusing on UI/UX and animations, which you can see throughout this portfolio.",
         "Outside of dev work, I enjoy grabbing coffee with friends, spending time with my girlfriend, or relaxing with a good movie or video game.",
       ],

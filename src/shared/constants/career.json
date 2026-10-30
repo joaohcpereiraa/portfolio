@@ -1,7 +1,7 @@
 {
   "name": "João Pereira",
   "role": "Full-Stack Developer",
-  "bio": "Software Engineer graduated from ISEP, currently studying for an MSc in Cybersecurity & System Administration.",
+  "bio": "Full-stack Software Engineer graduated in Informatics Engineering from ISEP.",
   "timeline": [
     {
       "id": 1,
@@ -34,14 +34,6 @@
       "title": "Junior Full-Stack Software Engineer",
       "place": "Its Possible Tech",
       "description": "Built products end-to-end with React, Next.js, Node.js and TypeScript, maintained AWS serverless infrastructure and integrated payment gateways and AI solutions."
-    },
-    {
-      "id": 5,
-      "type": "education",
-      "period": "2026 — 2028 (expected)",
-      "title": "MSc in Cybersecurity & System Administration",
-      "place": "ISEP — Instituto Superior de Engenharia do Porto",
-      "description": "Currently deepening my focus on security, networks and systems administration."
     }
   ]
 }
