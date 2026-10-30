@@ -1,4 +1,4 @@
-import { ROOM } from "./items";
+import { ROOM } from "../../data/items";
 import Rug from "./Rug";
 
 const { half, height } = ROOM;
@@ -99,10 +99,10 @@ const Room = () => {
 
       {/* Lighting: soft even fill, moonlight from the window, and gentle neon
           washes (kept low so the walls don't turn into a pink-to-blue gradient). */}
-      <hemisphereLight args={["#57538f", "#15122a", 0.85]} />
-      <directionalLight position={[-6, 3.5, -1.5]} intensity={0.7} color="#8fa3ff" />
-      <pointLight position={[0, 2.35, -2.1]} intensity={3.5} distance={6} color="#e07fd0" />
-      <pointLight position={[2.1, 2.35, 0.2]} intensity={2.6} distance={6} color="#6fbde6" />
+      <hemisphereLight args={["#57538f", "#15122a", 0.75]} />
+      <directionalLight position={[-6, 3.5, -1.5]} intensity={0.6} color="#8fa3ff" />
+      <pointLight position={[0, 2.35, -2.1]} intensity={3} distance={6} color="#e07fd0" />
+      <pointLight position={[2.1, 2.35, 0.2]} intensity={2.2} distance={6} color="#6fbde6" />
     </group>
   );
 };
