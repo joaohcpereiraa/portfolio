@@ -1,7 +1,7 @@
 import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
-import { assetUrl } from "../../../utils/assetUrl";
-import { MAP_ASPECT, MAP_PINS } from "./mapPins";
+import { assetUrl } from "#shared/utils/assetUrl";
+import { MAP_ASPECT, MAP_PINS } from "../../data/mapPins";
 
 const MAP_URL = assetUrl("/images/world-map.svg");
 

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowUp, BatteryFull, ChevronLeft, MessageCircle, Signal, UserRound, Wifi, X } from "lucide-react";
 import { aboutCard, profile, socials } from "#constants";
-import { assetUrl } from "../../../utils/assetUrl";
-import useDragScroll from "./useDragScroll";
+import { assetUrl } from "#shared/utils/assetUrl";
+import useDragScroll from "../../../hooks/useDragScroll";
 
 const PHOTO_URL = assetUrl("/images/joao.png");
 const EMAIL = aboutCard.rows.find((r) => r.label === "email").value;

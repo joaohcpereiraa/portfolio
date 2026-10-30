@@ -9,7 +9,7 @@ const PILLOW = "#e6e3f7";
 // Bed in the back-left corner, kept to a few soft shapes: frame, padded
 // headboard, mattress, duvet with its top folded back, two pillows. Local: x
 // across the bed, -z toward the headboard, y 0 = floor. The duvet's top sits
-// at y 0.555, where the phone lies (see items.js).
+// at y 0.555, where the phone lies (see data/items.js).
 const BedBody = () => (
   <group>
     <RoundedBox args={[1.42, 0.24, 2.02]} radius={0.04} position={[0, 0.14, 0]}>

@@ -3,20 +3,21 @@ import { Canvas } from "@react-three/fiber";
 import { Bloom, EffectComposer, Outline, Selection } from "@react-three/postprocessing";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { ArrowLeft, FileText } from "lucide-react";
-import useBootStore from "#store/boot";
-import useBedroomStore from "#store/bedroom";
-import { HOME_VIEW } from "./items";
-import CameraRig from "./CameraRig";
-import Scene from "./Scene";
-import Loader from "./Loader";
-import RoomErrorBoundary from "./RoomErrorBoundary";
-import TimelineCard from "./panels/TimelineCard";
-import PhoneScreen from "./phone/PhoneScreen";
-import HandheldScreen from "./handheld/HandheldScreen";
-import ProjectCard from "./panels/ProjectCard";
-import CvCard from "./panels/CvCard";
-import QuickView from "./panels/QuickView";
+import { FileText } from "lucide-react";
+import useBootStore from "#shared/store/boot";
+import useBedroomStore from "./store/useBedroomStore";
+import { HOME_VIEW } from "./data/items";
+import CameraRig from "./components/scene/CameraRig";
+import Scene from "./components/scene/Scene";
+import Loader from "./components/ui/Loader";
+import RoomErrorBoundary from "./components/ui/RoomErrorBoundary";
+import BadgeCard from "./components/ui/cards/BadgeCard";
+import PhoneScreen from "./components/ui/phone/PhoneScreen";
+import HandheldScreen from "./components/ui/handheld/HandheldScreen";
+import ProjectCard from "./components/ui/cards/ProjectCard";
+import CvCard from "./components/ui/cards/CvCard";
+import TipBar from "./components/ui/TipBar";
+import Landing from "#landing/Landing";
 
 // The landing experience: a first-person 3D bedroom at night. Every portfolio
 // section lives on an object in the room; the laptop leads to the desktop.
@@ -99,12 +100,7 @@ const Bedroom = () => {
       )}
 
       {focused === "computer" && phase === "landing" && (
-        <div className="bedroom-computer-tip">
-          <button type="button" onClick={close}>
-            <ArrowLeft size={14} /> Back
-          </button>
-          <span>Click the screen to start</span>
-        </div>
+        <TipBar onBack={close} hint="Click the screen to start" />
       )}
 
       {focused === "cv" && phase === "landing" && cvPicked && (
@@ -112,11 +108,11 @@ const Bedroom = () => {
       )}
 
       {focused === "phone" && phase === "landing" && <PhoneScreen onClose={close} />}
-      {focused === "timeline" && phase === "landing" && <TimelineCard />}
+      {focused === "experience" && phase === "landing" && <BadgeCard />}
       {focused === "tech" && phase === "landing" && <HandheldScreen onClose={close} />}
       {focused === "projects" && phase === "landing" && <ProjectCard />}
 
-      {quickView && phase === "landing" && <QuickView onClose={() => setQuickView(false)} />}
+      {quickView && phase === "landing" && <Landing onClose={() => setQuickView(false)} />}
 
       <div className="bedroom-fade" />
 

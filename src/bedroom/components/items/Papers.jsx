@@ -1,16 +1,11 @@
 import { useEffect, useState } from "react";
 import * as THREE from "three";
 import { Html } from "@react-three/drei";
-import { pdfjs } from "react-pdf";
-import useBedroomStore from "#store/bedroom";
-import { assetUrl } from "../../../utils/assetUrl";
+import { pdfjs } from "#shared/utils/pdf";
+import useBedroomStore from "../../store/useBedroomStore";
+import { cvUrl } from "#constants";
+import { isDrag } from "../../utils/pointer";
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url,
-).toString();
-
-const CV_URL = assetUrl("/files/resumee.pdf");
 const RENDER_HEIGHT = 1400; // px; enough to read the headings up close
 
 // A small stack of printed CV pages on the desk, with a pen.
@@ -28,7 +23,7 @@ const useCvTexture = () => {
   useEffect(() => {
     let cancelled = false;
     let made = null;
-    const task = pdfjs.getDocument(CV_URL);
+    const task = pdfjs.getDocument(cvUrl);
 
     (async () => {
       try {
@@ -83,7 +78,7 @@ const PlaceholderLines = () => (
 // click bubbles to the Clickable, which flies to the desk.
 const handleClick = (e) => {
   const { focused, setNoteIndex } = useBedroomStore.getState();
-  if (focused !== "cv" || e.delta > 6) return;
+  if (focused !== "cv" || isDrag(e)) return;
   e.stopPropagation();
   setNoteIndex(0);
 };

@@ -17,12 +17,11 @@ const useBedroomStore = create((set) => ({
   focused: null,
   hovered: null,
   hintSeen: readHintSeen(),
-  // Timeline cork board: noteIndex is the note asked for (null = none open,
-  // just looking at the board); takenIndex is the one actually off the board
-  // (it changes only after the open card folds away); closing asks the open
-  // card to fold up before the board closes. The project posters use the
-  // same three for the poster taken off the wall, and the CV sets noteIndex
-  // to 0 while it's picked up off the desk.
+  // Project posters and experience badges: noteIndex is the one asked for
+  // (null = none open, just looking at the wall); takenIndex is the one
+  // actually off the wall (it changes only after the open card flips away);
+  // closing asks the open card to put itself away before the wall closes.
+  // The CV sets noteIndex to 0 while it's picked up off the desk.
   noteIndex: null,
   takenIndex: null,
   closing: false,

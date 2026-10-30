@@ -1,10 +1,11 @@
 import { useLayoutEffect, useMemo, useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
-import useBootStore from "#store/boot";
-import useBedroomStore from "#store/bedroom";
-import { assetUrl } from "../../utils/assetUrl";
-import { laptopScreen } from "./screen";
+import useBootStore from "#shared/store/boot";
+import useBedroomStore from "../../store/useBedroomStore";
+import { assetUrl } from "#shared/utils/assetUrl";
+import { laptopScreen } from "../../store/laptopScreen";
+import { isDrag } from "../../utils/pointer";
 
 const MODEL_URL = assetUrl("/models/macbook-pro.glb");
 
@@ -58,7 +59,7 @@ const Laptop = () => {
   }, [model]);
 
   const handleClick = (e) => {
-    if (!e.object.userData.screenHit || e.delta > 6) return;
+    if (!e.object.userData.screenHit || isDrag(e)) return;
     if (useBedroomStore.getState().focused !== "computer") return;
     e.stopPropagation();
     useBootStore.getState().enter();

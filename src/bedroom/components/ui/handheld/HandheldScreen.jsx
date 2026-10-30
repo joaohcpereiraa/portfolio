@@ -1,27 +1,11 @@
 import { useEffect, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { skillsOrbit } from "#constants";
-import { reducedMotion } from "../motion";
+import useTypewriter from "../../../hooks/useTypewriter";
 import PixelIcon from "./PixelIcon";
 
 const COLS = 4;
 const SLOTS = 8; // two rows per bag; unused slots show as empty
-
-// Types `text` out letter by letter, like an RPG dialogue box.
-const useTypewriter = (text) => {
-  const [count, setCount] = useState(reducedMotion ? text.length : 0);
-  useEffect(() => {
-    if (reducedMotion) return;
-    const id = setInterval(() => {
-      setCount((c) => {
-        if (c >= text.length) clearInterval(id);
-        return Math.min(c + 2, text.length);
-      });
-    }, 22);
-    return () => clearInterval(id);
-  }, [text]);
-  return text.slice(0, count);
-};
 
 // Remounted per item (keyed), so the typing restarts on every inspect.
 const ItemDetails = ({ item, stack }) => {

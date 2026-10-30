@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { RoundedBox } from "@react-three/drei";
-import { reducedMotion } from "../motion";
+import { reducedMotion } from "../../utils/motion";
 
 const LAVA = [2.8, 0.6, 1.6]; // bloom picks up values above 1
 const SLEEVES = ["#e76f51", "#2a9d8f", "#f4a261", "#6d5bd0"];

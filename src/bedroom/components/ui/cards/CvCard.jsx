@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, ChevronLeft, ChevronRight, Download, ExternalLink } from "lucide-react";
-import { Document, Page, pdfjs } from "react-pdf";
-import { assetUrl } from "../../../utils/assetUrl";
-
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url,
-).toString();
-
-const CV_URL = assetUrl("/files/resumee.pdf");
+import { ArrowLeft, Download, ExternalLink } from "lucide-react";
+import { Document, Page } from "react-pdf";
+import "#shared/utils/pdf";
+import { cvUrl } from "#constants";
+import Pager from "../Pager";
 
 // Page height that fits the viewport under the action bar.
 const fitHeight = () => Math.min(Math.round(window.innerHeight * 0.78), 1000);
@@ -44,10 +39,10 @@ const CvCard = ({ onClose }) => {
         <button type="button" onClick={onClose}>
           <ArrowLeft size={14} /> Back
         </button>
-        <a href={CV_URL} target="_blank" rel="noreferrer">
+        <a href={cvUrl} target="_blank" rel="noreferrer">
           <ExternalLink size={14} /> Open
         </a>
-        <a href={CV_URL} download className="primary">
+        <a href={cvUrl} download className="primary">
           <Download size={14} /> Download
         </a>
       </div>
@@ -57,7 +52,7 @@ const CvCard = ({ onClose }) => {
           <p className="cv-card-note">Preview unavailable. Use Open or Download above.</p>
         ) : (
           <Document
-            file={CV_URL}
+            file={cvUrl}
             onLoadSuccess={({ numPages }) => setPages(numPages)}
             onLoadError={() => setFailed(true)}
             loading={<p className="cv-card-note">Loading…</p>}
@@ -68,17 +63,7 @@ const CvCard = ({ onClose }) => {
       </div>
 
       {pages > 1 && (
-        <div className="cv-card-pages">
-          <button type="button" onClick={() => setPage((p) => Math.max(p - 1, 1))} disabled={page === 1} aria-label="Previous page">
-            <ChevronLeft size={16} />
-          </button>
-          <span>
-            {page} / {pages}
-          </span>
-          <button type="button" onClick={() => setPage((p) => Math.min(p + 1, pages))} disabled={page === pages} aria-label="Next page">
-            <ChevronRight size={16} />
-          </button>
-        </div>
+        <Pager className="cv-card-pages" index={page - 1} count={pages} onGo={(i) => setPage(i + 1)} label="page" />
       )}
     </div>
   );

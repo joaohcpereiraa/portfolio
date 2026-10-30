@@ -15,12 +15,15 @@ export const HOME_VIEW = {
 // Bedside lamp on the nightstand (decor).
 export const LAMP_SPOT = { position: [-0.85, 0.5, -2.3], rotation: [0, 0, 0] };
 
+// Desk lamp on the left of the desk (decor, switchable).
+export const DESK_LAMP_SPOT = { position: [-0.12, 0.75, -2.32], rotation: [0, 0, 0] };
+
 // Cozy clutter on the lower shelf plank (lava lamp, speaker, cactus, records).
 export const SHELF_SPOT = { position: [2.37, 1.2, -0.9], rotation: [0, -Math.PI / 2, 0] };
 
 // `quiet` items are decor you can still fly up to: no marker or label, just
 // the hover outline.
-export const ITEMS = [
+const ITEMS = [
   {
     id: "map",
     quiet: true,
@@ -38,11 +41,12 @@ export const ITEMS = [
     view: { position: [0.4, 1.02, -1.75], target: [0.4, 0.88, -2.25] },
   },
   {
-    id: "timeline",
-    label: "Timeline",
-    spot: { position: [0.4, 1.62, -2.47], rotation: [0, 0, 0] },
-    marker: [0.4, 2.12, -2.4],
-    view: { position: [0.4, 1.6, -1.55], target: [0.4, 1.62, -2.5] },
+    id: "experience",
+    label: "Experience",
+    // A lanyard + ID badge per role, hanging from a peg rail above the desk.
+    spot: { position: [0.4, 1.64, -2.47], rotation: [0, 0, 0] },
+    marker: [0.4, 2.15, -2.4],
+    view: { position: [0.4, 1.6, -1.45], target: [0.4, 1.6, -2.5] },
   },
   {
     id: "tech",

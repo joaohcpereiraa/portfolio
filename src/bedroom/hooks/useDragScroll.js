@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { reducedMotion } from "../motion";
+import { reducedMotion } from "../utils/motion";
 
 const DRAG_START = 4; // px before a press becomes a drag (so taps still click)
 const FRICTION = 0.94; // per-frame velocity decay for the flick

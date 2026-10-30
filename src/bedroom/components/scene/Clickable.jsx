@@ -2,12 +2,10 @@ import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 import { Select } from "@react-three/postprocessing";
-import useBootStore from "#store/boot";
-import useBedroomStore from "#store/bedroom";
-import { getItem } from "./items";
-import { reducedMotion } from "./motion";
-
-const CLICK_THRESHOLD = 6; // px of movement below which a press counts as a click
+import useBedroomStore from "../../store/useBedroomStore";
+import { getItem } from "../../data/items";
+import { reducedMotion } from "../../utils/motion";
+import { canInteract, isDrag } from "../../utils/pointer";
 
 // Wraps one portfolio object in the room: places it at its spot, floats a
 // pulsing marker above it so visitors can tell it's clickable, outlines it
@@ -25,8 +23,6 @@ const Clickable = ({ id, children }) => {
     m.scale.setScalar(pulse);
   });
 
-  const canInteract = () => useBootStore.getState().phase === "landing";
-
   const handleOver = (e) => {
     e.stopPropagation();
     if (!canInteract()) return;
@@ -37,7 +33,7 @@ const Clickable = ({ id, children }) => {
   };
   const handleClick = (e) => {
     e.stopPropagation();
-    if (!canInteract() || e.delta > CLICK_THRESHOLD) return;
+    if (!canInteract() || isDrag(e)) return;
     if (useBedroomStore.getState().focused !== id) useBedroomStore.getState().focus(id);
   };
 

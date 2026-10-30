@@ -2,11 +2,11 @@ import { useEffect, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import gsap from "gsap";
-import useBootStore from "#store/boot";
-import useBedroomStore from "#store/bedroom";
-import { HOME_VIEW, getItem } from "./items";
-import { reducedMotion } from "./motion";
-import { laptopScreen } from "./screen";
+import useBootStore from "#shared/store/boot";
+import useBedroomStore from "../../store/useBedroomStore";
+import { HOME_VIEW, getItem } from "../../data/items";
+import { reducedMotion } from "../../utils/motion";
+import { laptopScreen } from "../../store/laptopScreen";
 
 const { clamp, damp, degToRad } = THREE.MathUtils;
 

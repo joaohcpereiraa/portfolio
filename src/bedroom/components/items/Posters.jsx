@@ -3,8 +3,10 @@ import { useFrame } from "@react-three/fiber";
 import { RoundedBox, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { landingProjects } from "#constants";
-import useBedroomStore from "#store/bedroom";
-import { reducedMotion } from "../motion";
+import { reducedMotion } from "../../utils/motion";
+import usePickable from "../../hooks/usePickable";
+import { isTaken } from "../../store/selectors";
+import WallCatcher from "./WallCatcher";
 
 const { damp } = THREE.MathUtils;
 
@@ -67,22 +69,17 @@ const ColorPoster = ({ accent }) => (
   </Frame>
 );
 
-const isTaken = (index) => {
-  const { focused, takenIndex } = useBedroomStore.getState();
-  return focused === "projects" && takenIndex === index;
-};
-
 // One poster. Hover lifts it off the wall; once picked it peels away, flies
 // to the middle of the view and flips over, hiding as its back turns to us,
 // where the DOM project card takes over and finishes the flip. Put back, it
 // flips around again and settles on the wall.
 const Poster = ({ project, index, x }) => {
   const groupRef = useRef(null);
-  const hoverRef = useRef(false);
+  const { hoverRef, handlers } = usePickable("projects", index);
 
   useFrame((_, dt) => {
     const g = groupRef.current;
-    const selected = isTaken(index);
+    const selected = isTaken("projects", index);
     const to = selected
       ? { x: -x, z: TAKE_Z, rotX: -0.12, rotY: Math.PI, scale: TAKE_SCALE }
       : { x: 0, z: hoverRef.current ? LIFT : 0, rotX: 0, rotY: 0, scale: 1 };
@@ -97,48 +94,12 @@ const Poster = ({ project, index, x }) => {
     g.visible = g.rotation.y < Math.PI * 0.45;
   });
 
-  const handleOver = () => {
-    if (useBedroomStore.getState().focused === "projects" && !isTaken(index)) hoverRef.current = true;
-  };
-  const handleOut = () => {
-    hoverRef.current = false;
-  };
-  // With the wall open, clicking a poster takes it down. Before that, the
-  // click bubbles to the Clickable, which opens the wall.
-  const handleClick = (e) => {
-    const { focused, setNoteIndex } = useBedroomStore.getState();
-    if (focused !== "projects" || e.delta > 6 || isTaken(index)) return;
-    e.stopPropagation();
-    setNoteIndex(index);
-  };
-
   return (
     <group position={[x, 0, 0]}>
-      <group ref={groupRef} onPointerOver={handleOver} onPointerOut={handleOut} onClick={handleClick}>
+      <group ref={groupRef} {...handlers}>
         {project.image ? <ImagePoster image={project.image} /> : <ColorPoster accent={project.accent} />}
       </group>
     </group>
-  );
-};
-
-// With the wall open, clicking the wall around the posters puts the open one
-// back; the view stays on the posters. Only there while focused, so it never
-// shows up in the hover outline.
-const WallCatcher = () => {
-  const focused = useBedroomStore((s) => s.focused === "projects");
-  if (!focused) return null;
-
-  const handleClick = (e) => {
-    if (e.delta > 6) return;
-    e.stopPropagation();
-    useBedroomStore.getState().setNoteIndex(null);
-  };
-
-  return (
-    <mesh position={[0, 0, -0.005]} onClick={handleClick}>
-      <planeGeometry args={[GAP * landingProjects.length + 0.6, H + 0.8]} />
-      <meshBasicMaterial transparent opacity={0} depthWrite={false} />
-    </mesh>
   );
 };
 
@@ -146,7 +107,7 @@ const WallCatcher = () => {
 // wall, +z faces into the room.
 const Posters = () => (
   <group>
-    <WallCatcher />
+    <WallCatcher focusId="projects" width={GAP * landingProjects.length + 0.6} height={H + 0.8} z={-0.005} />
     {landingProjects.map((p, i) => (
       <Poster key={p.id} project={p} index={i} x={(i - (landingProjects.length - 1) / 2) * GAP} />
     ))}
